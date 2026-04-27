@@ -1,0 +1,7 @@
+apiVersion: 1
+
+providers:
+  - name: 'zabbix_problems_pro'
+    type: file
+    options:
+      path: /etc/grafana/provisioning/dashboards
