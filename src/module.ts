@@ -2,39 +2,10 @@ import { FieldConfigProperty, PanelPlugin } from '@grafana/data';
 import { PanelOptions } from './types';
 import { SimplePanel } from './components/SimplePanel';
 import { SeverityColorEditor } from './components/SeverityColorEditor';
+import { ResetOptionsButton } from './components/ResetOptionsButton';
+import { DEFAULT_OPTIONS } from './constants';
 
-const defaultOptions: PanelOptions = {
-  layout: 'list',
-  sortBy: 'lastChange',
-  fontSize: 100,
-  pageSize: 10,
-  highlightBackground: false,
-
-  severityColors: {
-    0: { label: 'Not classified', color: '#6b7280', show: true },
-    1: { label: 'Information',    color: '#3b82f6', show: true },
-    2: { label: 'Warning',        color: '#eab308', show: true },
-    3: { label: 'Average',        color: '#f97316', show: true },
-    4: { label: 'High',           color: '#ef4444', show: true },
-    5: { label: 'Disaster',       color: '#dc2626', show: true },
-  },
-
-  showSeverityBadge: true,
-  showHostName: true,
-  showTimestamp: true,
-  showDescription: true,
-  showTags: true,
-  showEventId: true,
-  showSuppressed: true,
-
-  showTriggerExpression: true,
-  showComment: true,
-  showMonitoredItems: true,
-  showDetailTags: true,
-  showHostGroups: true,
-  showZabbixLink: true,
-  zabbixBaseUrl: '',
-};
+const defaultOptions = DEFAULT_OPTIONS;
 
 export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
   .useFieldConfig({
@@ -200,5 +171,15 @@ export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
         description: 'Used to build direct event links. E.g.: https://zabbix.company.com',
         category: ['Details Fields'],
         defaultValue: '',
+      })
+
+      // ─── Section 5: Reset ───────────────────────────────────────────────
+      .addCustomEditor({
+        id: 'resetOptions',
+        path: 'resetOptions',
+        name: '',
+        description: '',
+        editor: ResetOptionsButton,
+        category: ['Reset'],
       });
   });

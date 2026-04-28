@@ -38,10 +38,6 @@ const getStyles = () => ({
     border-radius: 10px;
     overflow: hidden;
     border: 1px solid #1e2d3d;
-    transition: border-color 0.2s;
-  `,
-  cardDisaster: css`
-    border-color: #3d1010;
   `,
   header: css`
     display: flex;
@@ -179,7 +175,6 @@ export const ProblemCard: React.FC<Props> = ({ problem, isOpen, onToggle, option
   const styles = useStyles2(getStyles);
   const customColor = options.severityColors?.[problem.severity]?.color;
   const colors = getSeverityColors(problem.severity, customColor);
-  const isDisaster = problem.severity === 5;
 
   const handleBtnClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -195,7 +190,7 @@ export const ProblemCard: React.FC<Props> = ({ problem, isOpen, onToggle, option
   const showDivider = hasTagsVisible && options.showEventId;
 
   return (
-    <div className={cx(styles.card, isDisaster && styles.cardDisaster)}>
+    <div className={styles.card}>
       <div className={styles.header} style={highlightBg} onClick={onToggle}>
         {!options.highlightBackground && (
           <div className={styles.severityBar} style={{ background: colors.bar }} />
