@@ -1,9 +1,9 @@
 import React from 'react';
-import { ColorPicker, Switch, useTheme2 } from '@grafana/ui';
+import { ColorPicker, Switch, Input, useTheme2 } from '@grafana/ui';
 import { StandardEditorProps } from '@grafana/data';
 import { SeverityColorConfig } from '../../types';
 
-const SEVERITY_LABELS: Record<number, string> = {
+const SEVERITY_DEFAULT_LABELS: Record<number, string> = {
   0: 'Not classified',
   1: 'Information',
   2: 'Warning',
@@ -26,6 +26,10 @@ type SeverityColorsValue = Record<number, SeverityColorConfig>;
 export const SeverityColorEditor = ({ value, onChange }: StandardEditorProps<SeverityColorsValue>) => {
   const theme = useTheme2();
 
+  const handleLabelChange = (severity: number, label: string) => {
+    onChange({ ...value, [severity]: { ...value[severity], label } });
+  };
+
   const handleColorChange = (severity: number, color: string) => {
     onChange({ ...value, [severity]: { ...value[severity], color } });
   };
@@ -47,15 +51,12 @@ export const SeverityColorEditor = ({ value, onChange }: StandardEditorProps<Sev
             borderBottom: `1px solid ${theme.colors.border.weak}`,
           }}
         >
-          <span
-            style={{
-              flex: 1,
-              fontSize: '13px',
-              color: theme.colors.text.primary,
-            }}
-          >
-            {SEVERITY_LABELS[severity]}
-          </span>
+          <Input
+            value={value?.[severity]?.label ?? SEVERITY_DEFAULT_LABELS[severity]}
+            onChange={(e) => handleLabelChange(severity, (e.target as HTMLInputElement).value)}
+            width={16}
+            style={{ fontSize: '13px' }}
+          />
 
           <ColorPicker
             color={value?.[severity]?.color ?? DEFAULT_COLORS[severity]}

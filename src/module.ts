@@ -11,12 +11,12 @@ const defaultOptions: PanelOptions = {
   highlightBackground: false,
 
   severityColors: {
-    0: { color: '#6b7280', show: true },
-    1: { color: '#3b82f6', show: true },
-    2: { color: '#eab308', show: true },
-    3: { color: '#f97316', show: true },
-    4: { color: '#ef4444', show: true },
-    5: { color: '#dc2626', show: true },
+    0: { label: 'Not classified', color: '#6b7280', show: true },
+    1: { label: 'Information',    color: '#3b82f6', show: true },
+    2: { label: 'Warning',        color: '#eab308', show: true },
+    3: { label: 'Average',        color: '#f97316', show: true },
+    4: { label: 'High',           color: '#ef4444', show: true },
+    5: { label: 'Disaster',       color: '#dc2626', show: true },
   },
 
   showSeverityBadge: true,
@@ -38,18 +38,7 @@ const defaultOptions: PanelOptions = {
 
 export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
   .useFieldConfig({
-    disableStandardOptions: [
-      FieldConfigProperty.Color,
-      FieldConfigProperty.DisplayName,
-      FieldConfigProperty.Decimals,
-      FieldConfigProperty.Links,
-      FieldConfigProperty.Mappings,
-      FieldConfigProperty.Max,
-      FieldConfigProperty.Min,
-      FieldConfigProperty.NoValue,
-      FieldConfigProperty.Thresholds,
-      FieldConfigProperty.Unit,
-    ],
+    disableStandardOptions: Object.values(FieldConfigProperty) as FieldConfigProperty[],
   })
   .setPanelOptions((builder) => {
     return builder
@@ -112,7 +101,14 @@ export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
         name: 'Problem colors',
         category: ['Colors'],
         editor: SeverityColorEditor,
-        defaultValue: defaultOptions.severityColors,
+        defaultValue: {
+          0: { label: 'Not classified', color: '#6b7280', show: true },
+          1: { label: 'Information',    color: '#3b82f6', show: true },
+          2: { label: 'Warning',        color: '#eab308', show: true },
+          3: { label: 'Average',        color: '#f97316', show: true },
+          4: { label: 'High',           color: '#ef4444', show: true },
+          5: { label: 'Disaster',       color: '#dc2626', show: true },
+        },
       })
 
       // ─── Section 3: Card Fields ─────────────────────────────────────────
