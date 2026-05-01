@@ -1,6 +1,16 @@
 import React from 'react';
-import { css } from '@emotion/css';
+import { css, keyframes } from '@emotion/css';
 import { useStyles2 } from '@grafana/ui';
+
+const scaleIn = keyframes`
+  from { opacity: 0; transform: scale(0.6); }
+  to   { opacity: 1; transform: scale(1); }
+`;
+
+const strokeDraw = keyframes`
+  from { stroke-dashoffset: 100; }
+  to   { stroke-dashoffset: 0; }
+`;
 
 const getStyles = () => ({
   emptyWrapper: css`
@@ -12,6 +22,17 @@ const getStyles = () => ({
     min-height: 160px;
     gap: 14px;
     font-family: 'Inter', system-ui, sans-serif;
+    animation: ${scaleIn} 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  `,
+  emptyIcon: css`
+    animation: ${scaleIn} 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    & path,
+    & polyline {
+      stroke-dasharray: 100;
+      stroke-dashoffset: 100;
+      animation: ${strokeDraw} 0.8s ease forwards;
+      animation-delay: 0.3s;
+    }
   `,
   title: css`
     font-size: 16px;
@@ -32,7 +53,7 @@ export const EmptyState: React.FC = () => {
 
   return (
     <div className={styles.emptyWrapper}>
-      <svg width="52" height="52" viewBox="0 0 24 24" fill="none"
+      <svg className={styles.emptyIcon} width="52" height="52" viewBox="0 0 24 24" fill="none"
         stroke="rgba(65, 216, 130, 0.4)" strokeWidth="1.2"
         strokeLinecap="round" strokeLinejoin="round">
         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>

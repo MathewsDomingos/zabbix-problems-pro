@@ -9,6 +9,7 @@ import { EmptyState } from '../EmptyState/EmptyState';
 interface Props {
   problems: ZabbixProblem[];
   options: PanelOptions;
+  currentPage?: number;
 }
 
 const getStyles = () => ({
@@ -24,7 +25,7 @@ const getStyles = () => ({
   `,
 });
 
-export const ProblemsList: React.FC<Props> = ({ problems, options }) => {
+export const ProblemsList: React.FC<Props> = ({ problems, options, currentPage }) => {
   const styles = useStyles2(getStyles);
   const [openId, setOpenId] = useState<string | null>(null);
 
@@ -37,16 +38,17 @@ export const ProblemsList: React.FC<Props> = ({ problems, options }) => {
   }
 
   return (
-    <div className={styles.list}>
-      {problems.map((problem) => {
+    <div key={`page-${currentPage ?? 0}`} className={styles.list}>
+      {problems.map((problem, index) => {
         const key = problem.eventid || `${problem.triggerid}-${problem.time.getTime()}`;
         const isOpen = openId === problem.eventid;
         const onToggle = () => handleToggle(problem.eventid);
+        const cardStyle = { animationDelay: `${Math.min(index * 40, 300)}ms` };
 
         return options.layout === 'macro' ? (
-          <MacroCard key={key} problem={problem} isOpen={isOpen} onToggle={onToggle} options={options} />
+          <MacroCard key={key} style={cardStyle} problem={problem} isOpen={isOpen} onToggle={onToggle} options={options} />
         ) : (
-          <ProblemCard key={key} problem={problem} isOpen={isOpen} onToggle={onToggle} options={options} />
+          <ProblemCard key={key} style={cardStyle} problem={problem} isOpen={isOpen} onToggle={onToggle} options={options} />
         );
       })}
     </div>

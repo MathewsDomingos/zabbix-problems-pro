@@ -99,7 +99,7 @@ export const SimplePanel: React.FC<Props> = ({ data, width, height, options, onO
       }}
     >
       <div className={options.showScrollbar ? styles.listContainer : styles.listContainerNoScrollbar}>
-        <ProblemsList problems={paged} options={options} />
+        <ProblemsList problems={paged} options={options} currentPage={safePage} />
       </div>
       {options.showPagination && (
         <Pagination

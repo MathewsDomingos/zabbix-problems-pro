@@ -15,12 +15,15 @@ const getStyles = () => ({
   details: css`
     overflow: hidden;
     max-height: 0;
-    transition: max-height 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    transition: max-height 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+                opacity 0.3s ease;
     background: #0d131c;
     border-top: 0 solid transparent;
   `,
   detailsOpen: css`
-    max-height: 1200px;
+    max-height: 900px;
+    opacity: 1;
     border-top: 1px solid #1a2535;
   `,
   inner: css`

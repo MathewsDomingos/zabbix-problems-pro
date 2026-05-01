@@ -1,6 +1,12 @@
 import React from 'react';
-import { css, cx } from '@emotion/css';
+import { css, cx, keyframes, injectGlobal } from '@emotion/css';
 import { useStyles2 } from '@grafana/ui';
+
+injectGlobal`
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+`;
 import { ZabbixProblem, PanelOptions } from '../../types';
 import { getSeverityColors } from '../../utils/severityUtils';
 import { SeverityBadge } from '../SeverityBadge';
@@ -11,7 +17,19 @@ interface Props {
   isOpen: boolean;
   onToggle: () => void;
   options: PanelOptions;
+  style?: React.CSSProperties;
 }
+
+const severityPulse = keyframes`
+  0%   { opacity: 1; box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4); }
+  50%  { opacity: 0.85; box-shadow: 0 0 0 6px rgba(220, 38, 38, 0); }
+  100% { opacity: 1; box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+`;
+
+const cardFadeIn = keyframes`
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+`;
 
 const MONTHS_PT = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
 
@@ -38,6 +56,7 @@ const getStyles = () => ({
     border-radius: 10px;
     overflow: hidden;
     border: 1px solid #1e2d3d;
+    animation: ${cardFadeIn} 0.3s ease forwards;
   `,
   header: css`
     display: flex;
@@ -53,6 +72,9 @@ const getStyles = () => ({
   severityBar: css`
     width: 5px;
     flex-shrink: 0;
+  `,
+  severityBarDisaster: css`
+    animation: ${severityPulse} 2s ease-in-out infinite;
   `,
   content: css`
     flex: 1;
@@ -171,7 +193,7 @@ const getStyles = () => ({
   `,
 });
 
-export const ProblemCard: React.FC<Props> = ({ problem, isOpen, onToggle, options }) => {
+export const ProblemCard: React.FC<Props> = ({ problem, isOpen, onToggle, options, style }) => {
   const styles = useStyles2(getStyles);
   const customColor = options.severityColors?.[problem.severity]?.color;
   const colors = getSeverityColors(problem.severity, customColor);
@@ -190,10 +212,13 @@ export const ProblemCard: React.FC<Props> = ({ problem, isOpen, onToggle, option
   const showDivider = hasTagsVisible && options.showEventId;
 
   return (
-    <div className={styles.card}>
+    <div className={styles.card} style={style}>
       <div className={styles.header} style={highlightBg} onClick={onToggle}>
         {!options.highlightBackground && (
-          <div className={styles.severityBar} style={{ background: colors.bar }} />
+          <div
+            className={cx(styles.severityBar, problem.severity === 5 ? styles.severityBarDisaster : '')}
+            style={{ background: colors.bar }}
+          />
         )}
         <div className={styles.content}>
           {/* Top row: badge, host, suppressed badge, timestamp */}

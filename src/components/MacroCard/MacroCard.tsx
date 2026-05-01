@@ -1,16 +1,22 @@
 import React from 'react';
-import { css, cx } from '@emotion/css';
+import { css, cx, keyframes } from '@emotion/css';
 import { useStyles2 } from '@grafana/ui';
 import { ZabbixProblem, PanelOptions } from '../../types';
 import { getSeverityColors } from '../../utils/severityUtils';
 import { SeverityBadge } from '../SeverityBadge';
 import { ProblemDetails } from '../ProblemDetails';
 
+const cardFadeIn = keyframes`
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+`;
+
 interface Props {
   problem: ZabbixProblem;
   isOpen: boolean;
   onToggle: () => void;
   options: PanelOptions;
+  style?: React.CSSProperties;
 }
 
 const MONTHS_PT = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
@@ -41,6 +47,7 @@ const getStyles = () => ({
     border-radius: 8px;
     overflow: hidden;
     border: 1px solid #1e2d3d;
+    animation: ${cardFadeIn} 0.3s ease forwards;
   `,
   /* Outer flex row — align-items: stretch so the severity bar fills full height */
   macroRow: css`
@@ -151,7 +158,7 @@ const getStyles = () => ({
   `,
 });
 
-const MacroCard: React.FC<Props> = ({ problem, isOpen, onToggle, options }) => {
+const MacroCard: React.FC<Props> = ({ problem, isOpen, onToggle, options, style }) => {
   const styles = useStyles2(getStyles);
   const customColor = options.severityColors?.[problem.severity]?.color;
   const colors = getSeverityColors(problem.severity, customColor);
@@ -166,7 +173,7 @@ const MacroCard: React.FC<Props> = ({ problem, isOpen, onToggle, options }) => {
     : {};
 
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} style={style}>
       <div className={styles.macroRow} onClick={onToggle}>
         {/* Severity bar — sibling of rowContent, fills height via align-items: stretch */}
         {!options.highlightBackground && (
