@@ -101,7 +101,7 @@ export const Pagination: React.FC<Props> = ({
 }) => {
   const styles = useStyles2(getStyles);
 
-  if (totalPages <= 1) {
+  if (totalItems === 0) {
     return null;
   }
 
