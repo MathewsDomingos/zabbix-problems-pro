@@ -34,6 +34,9 @@ function hexToRgba(hex: string, alpha: number): string {
 }
 
 const getStyles = () => ({
+  /* CRÍTICO: nunca usar position absolute/fixed, z-index > 0 ou
+     width/height que ultrapasse os limites do painel. Causa bloqueio
+     dos controles da sidebar do Grafana. */
   wrapper: css`
     border-radius: 8px;
     overflow: hidden;

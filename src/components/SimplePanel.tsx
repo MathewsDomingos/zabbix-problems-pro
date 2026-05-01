@@ -10,10 +10,15 @@ interface Props extends PanelProps<PanelOptions> {}
 
 const getStyles = () => ({
   container: css`
-    position: relative;
+    /* CRÍTICO: isolation:isolate cria stacking context que contém todos os
+       z-index internos (ex: ProblemDetails.dot z-index:1). Sem isso, esses
+       valores competem no root context do Grafana e podem bloquear a sidebar.
+       Nunca usar position:fixed/absolute, z-index>0 sem isolation, ou
+       width/height que ultrapasse os limites do painel. */
+    isolation: isolate;
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    overflow-x: hidden;
     overflow-y: auto;
     background: transparent;
   `,

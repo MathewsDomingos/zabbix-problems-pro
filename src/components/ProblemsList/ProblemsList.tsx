@@ -11,6 +11,9 @@ interface Props {
 }
 
 const getStyles = () => ({
+  /* CRÍTICO: nunca usar min-height:100% aqui — força o div a ter a
+     altura total do painel, criando área clicável invisível que vaza
+     para fora do painel e bloqueia a sidebar do Grafana. */
   list: css`
     display: flex;
     flex-direction: column;
