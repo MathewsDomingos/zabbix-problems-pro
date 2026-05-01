@@ -33,7 +33,7 @@ export interface SeverityColorConfig {
 
 export interface PanelOptions {
   // Section 1 — Zabbix Problems View
-  layout: 'list';
+  layout: 'list' | 'macro';
   sortBy: 'lastChange' | 'severity' | 'default';
   fontSize: number;
   pageSize: number;

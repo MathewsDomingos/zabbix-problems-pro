@@ -20,7 +20,10 @@ export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
         category: ['Zabbix Problems View'],
         defaultValue: defaultOptions.layout,
         settings: {
-          options: [{ value: 'list', label: 'List' }],
+          options: [
+            { value: 'list',  label: 'List'  },
+            { value: 'macro', label: 'Macro' },
+          ],
         },
       })
       .addSelect({
@@ -107,18 +110,21 @@ export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
         name: 'Description',
         category: ['Card Fields'],
         defaultValue: true,
+        showIf: (options) => options.layout === 'list',
       })
       .addBooleanSwitch({
         path: 'showTags',
         name: 'Tags',
         category: ['Card Fields'],
         defaultValue: true,
+        showIf: (options) => options.layout === 'list',
       })
       .addBooleanSwitch({
         path: 'showEventId',
         name: 'Event ID',
         category: ['Card Fields'],
         defaultValue: true,
+        showIf: (options) => options.layout === 'list',
       })
       .addBooleanSwitch({
         path: 'showSuppressed',

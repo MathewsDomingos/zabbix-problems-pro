@@ -3,6 +3,7 @@ import { css } from '@emotion/css';
 import { useStyles2 } from '@grafana/ui';
 import { ZabbixProblem, PanelOptions } from '../../types';
 import { ProblemCard } from '../ProblemCard';
+import { MacroCard } from '../MacroCard';
 
 interface Props {
   problems: ZabbixProblem[];
@@ -83,15 +84,29 @@ export const ProblemsList: React.FC<Props> = ({ problems, options }) => {
 
   return (
     <div className={styles.list}>
-      {paged.map((problem) => (
-        <ProblemCard
-          key={problem.eventid || `${problem.triggerid}-${problem.time.getTime()}`}
-          problem={problem}
-          isOpen={openId === problem.eventid}
-          onToggle={() => handleToggle(problem.eventid)}
-          options={options}
-        />
-      ))}
+      {paged.map((problem) => {
+        const key = problem.eventid || `${problem.triggerid}-${problem.time.getTime()}`;
+        const isOpen = openId === problem.eventid;
+        const onToggle = () => handleToggle(problem.eventid);
+
+        return options.layout === 'macro' ? (
+          <MacroCard
+            key={key}
+            problem={problem}
+            isOpen={isOpen}
+            onToggle={onToggle}
+            options={options}
+          />
+        ) : (
+          <ProblemCard
+            key={key}
+            problem={problem}
+            isOpen={isOpen}
+            onToggle={onToggle}
+            options={options}
+          />
+        );
+      })}
       {filtered.length > pageSize && (
         <div className={styles.footer}>
           Showing {pageSize} of {filtered.length} problems
