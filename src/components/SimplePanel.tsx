@@ -1,4 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { css } from '@emotion/css';
+import { useStyles2 } from '@grafana/ui';
 import { PanelProps } from '@grafana/data';
 import { PanelOptions, ZabbixProblem } from '../types';
 import { mapDataFrameToProblems } from '../utils/dataMapper';
@@ -6,6 +8,26 @@ import { ProblemsList } from './ProblemsList';
 import { Pagination } from './Pagination/Pagination';
 
 interface Props extends PanelProps<PanelOptions> {}
+
+const getStyles = () => ({
+  listContainer: css`
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 0;
+    flex: 1;
+  `,
+  listContainerNoScrollbar: css`
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 0;
+    flex: 1;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  `,
+});
 
 function filterAndSort(problems: ZabbixProblem[], options: PanelOptions): ZabbixProblem[] {
   let result = problems.filter((p) => {
@@ -30,6 +52,7 @@ function filterAndSort(problems: ZabbixProblem[], options: PanelOptions): Zabbix
 }
 
 export const SimplePanel: React.FC<Props> = ({ data, width, height, options, onOptionsChange }) => {
+  const styles = useStyles2(getStyles);
   const [currentPage, setCurrentPage] = useState(1);
 
   const problems = useMemo(() => {
@@ -75,7 +98,7 @@ export const SimplePanel: React.FC<Props> = ({ data, width, height, options, onO
         background: 'transparent',
       }}
     >
-      <div style={{ flex: 1, overflowY: options.showScrollbar ? 'auto' : 'hidden', overflowX: 'hidden', minHeight: 0 }}>
+      <div className={options.showScrollbar ? styles.listContainer : styles.listContainerNoScrollbar}>
         <ProblemsList problems={paged} options={options} />
       </div>
       {options.showPagination && (
