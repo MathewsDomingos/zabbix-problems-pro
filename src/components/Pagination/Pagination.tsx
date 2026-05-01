@@ -69,6 +69,7 @@ const getStyles = () => ({
     padding: 0 8px;
   `,
   pagRowsSelect: css`
+    width: 90px;
     height: 30px;
     padding: 0 8px;
     border-radius: 6px;
