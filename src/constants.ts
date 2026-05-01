@@ -25,6 +25,9 @@ export const SEVERITY_LABELS: Record<number, string> = {
 };
 
 export const DEFAULT_OPTIONS: PanelOptions = {
+  showScrollbar: true,
+  showPagination: true,
+
   layout: 'list',
   sortBy: 'lastChange',
   fontSize: 100,

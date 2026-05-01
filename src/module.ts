@@ -13,6 +13,22 @@ export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
   })
   .setPanelOptions((builder) => {
     return builder
+      // ─── Section 0: Style ───────────────────────────────────────────────
+      .addBooleanSwitch({
+        path: 'showScrollbar',
+        name: 'Use Grafana scrollbar',
+        description: 'Show or hide the panel scrollbar',
+        category: ['Style'],
+        defaultValue: defaultOptions.showScrollbar,
+      })
+      .addBooleanSwitch({
+        path: 'showPagination',
+        name: 'Show pagination',
+        description: 'Show or hide the pagination controls',
+        category: ['Style'],
+        defaultValue: defaultOptions.showPagination,
+      })
+
       // ─── Section 1: Zabbix Problems View ───────────────────────────────
       .addSelect({
         path: 'layout',

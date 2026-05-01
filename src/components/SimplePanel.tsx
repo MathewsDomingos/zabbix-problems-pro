@@ -75,17 +75,19 @@ export const SimplePanel: React.FC<Props> = ({ data, width, height, options, onO
         background: 'transparent',
       }}
     >
-      <div style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden', minHeight: 0 }}>
+      <div style={{ flex: 1, overflowY: options.showScrollbar ? 'auto' : 'hidden', overflowX: 'hidden', minHeight: 0 }}>
         <ProblemsList problems={paged} options={options} />
       </div>
-      <Pagination
-        currentPage={safePage}
-        totalPages={totalPages}
-        totalItems={filtered.length}
-        pageSize={pageSize}
-        onPageChange={setCurrentPage}
-        onPageSizeChange={handlePageSizeChange}
-      />
+      {options.showPagination && (
+        <Pagination
+          currentPage={safePage}
+          totalPages={totalPages}
+          totalItems={filtered.length}
+          pageSize={pageSize}
+          onPageChange={setCurrentPage}
+          onPageSizeChange={handlePageSizeChange}
+        />
+      )}
     </div>
   );
 };

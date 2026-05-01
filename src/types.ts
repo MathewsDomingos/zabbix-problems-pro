@@ -32,6 +32,10 @@ export interface SeverityColorConfig {
 }
 
 export interface PanelOptions {
+  // Section 0 — Style
+  showScrollbar: boolean;
+  showPagination: boolean;
+
   // Section 1 — Zabbix Problems View
   layout: 'list' | 'macro';
   sortBy: 'lastChange' | 'severity' | 'default';
