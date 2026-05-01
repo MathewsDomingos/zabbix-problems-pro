@@ -81,6 +81,7 @@ export const SimplePanel: React.FC<Props> = ({ data, width, height, options, onO
       <Pagination
         currentPage={safePage}
         totalPages={totalPages}
+        totalItems={filtered.length}
         pageSize={pageSize}
         onPageChange={setCurrentPage}
         onPageSizeChange={handlePageSizeChange}
