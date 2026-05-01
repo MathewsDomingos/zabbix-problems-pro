@@ -116,15 +116,13 @@ export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
         path: 'showTags',
         name: 'Tags',
         category: ['Card Fields'],
-        defaultValue: true,
-        showIf: (options) => options.layout === 'list',
+        defaultValue: false,
       })
       .addBooleanSwitch({
         path: 'showEventId',
         name: 'Event ID',
         category: ['Card Fields'],
-        defaultValue: true,
-        showIf: (options) => options.layout === 'list',
+        defaultValue: false,
       })
       .addBooleanSwitch({
         path: 'showSuppressed',

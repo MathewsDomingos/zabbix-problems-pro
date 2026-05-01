@@ -96,6 +96,27 @@ const getStyles = () => ({
     text-overflow: ellipsis;
     min-width: 0;
   `,
+  tagChip: css`
+    font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    background: #111820;
+    color: #4a6178;
+    border: 1px solid #1a2535;
+    white-space: nowrap;
+    flex-shrink: 0;
+  `,
+  tagChipValue: css`
+    color: #7fa0c0;
+  `,
+  eventId: css`
+    font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+    font-size: 10px;
+    color: #3a5168;
+    white-space: nowrap;
+    flex-shrink: 0;
+  `,
   timestamp: css`
     font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
     font-size: 11px;
@@ -169,6 +190,17 @@ const MacroCard: React.FC<Props> = ({ problem, isOpen, onToggle, options }) => {
           <span className={styles.incidentName} title={problem.description}>
             {problem.description}
           </span>
+
+          {options.showTags && problem.tags.map((tag, idx) => (
+            <span key={idx} className={styles.tagChip}>
+              {tag.tag}
+              {tag.value && <span className={styles.tagChipValue}>:{tag.value}</span>}
+            </span>
+          ))}
+
+          {options.showEventId && (
+            <span className={styles.eventId}>#{problem.eventid}</span>
+          )}
 
           {options.showTimestamp && (
             <span className={styles.timestamp}>{formatTimestamp(problem.time)}</span>

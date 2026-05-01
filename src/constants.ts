@@ -44,8 +44,8 @@ export const DEFAULT_OPTIONS: PanelOptions = {
   showHostName: true,
   showTimestamp: true,
   showDescription: true,
-  showTags: true,
-  showEventId: true,
+  showTags: false,
+  showEventId: false,
   showSuppressed: true,
 
   showTriggerExpression: true,
