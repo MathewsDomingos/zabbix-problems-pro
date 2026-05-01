@@ -10,8 +10,10 @@ interface Props extends PanelProps<PanelOptions> {}
 
 const getStyles = () => ({
   container: css`
+    position: relative;
     width: 100%;
     height: 100%;
+    overflow: hidden;
     overflow-y: auto;
     background: transparent;
   `,

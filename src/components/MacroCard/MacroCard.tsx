@@ -39,13 +39,11 @@ const getStyles = () => ({
     overflow: hidden;
     border: 1px solid #1e2d3d;
   `,
+  /* Outer flex row — align-items: stretch so the severity bar fills full height */
   macroRow: css`
     display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 14px;
+    align-items: stretch;
     background: #141c27;
-    min-width: 0;
     cursor: pointer;
     user-select: none;
     transition: background 0.15s;
@@ -53,13 +51,19 @@ const getStyles = () => ({
       background: #16202e;
     }
   `,
+  /* 5 px colour bar — sibling of rowContent, no negative margins */
   severityBar: css`
     width: 5px;
     flex-shrink: 0;
-    align-self: stretch;
-    border-radius: 0;
-    margin: -8px 0 -8px -14px;
-    margin-right: 4px;
+  `,
+  /* Inner flex row that holds badge, host, name, timestamp, button */
+  rowContent: css`
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    flex: 1;
+    min-width: 0;
   `,
   hostChip: css`
     font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
@@ -139,41 +143,44 @@ const MacroCard: React.FC<Props> = ({ problem, isOpen, onToggle, options }) => {
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.macroRow} style={highlightBg} onClick={onToggle}>
+      <div className={styles.macroRow} onClick={onToggle}>
+        {/* Severity bar — sibling of rowContent, fills height via align-items: stretch */}
         {!options.highlightBackground && (
           <div className={styles.severityBar} style={{ background: colors.bar }} />
         )}
 
-        {options.showSeverityBadge && (
-          <SeverityBadge
-            severity={problem.severity}
-            customColor={customColor}
-            severityColors={options.severityColors}
-          />
-        )}
+        <div className={styles.rowContent} style={highlightBg}>
+          {options.showSeverityBadge && (
+            <SeverityBadge
+              severity={problem.severity}
+              customColor={customColor}
+              severityColors={options.severityColors}
+            />
+          )}
 
-        {options.showHostName && (
-          <span className={styles.hostChip}>{problem.host}</span>
-        )}
+          {options.showHostName && (
+            <span className={styles.hostChip}>{problem.host}</span>
+          )}
 
-        {options.showSuppressed && problem.suppressed && (
-          <span className={styles.suppressedBadge}>Suprimido</span>
-        )}
+          {options.showSuppressed && problem.suppressed && (
+            <span className={styles.suppressedBadge}>Suprimido</span>
+          )}
 
-        <span className={styles.incidentName} title={problem.description}>
-          {problem.description}
-        </span>
+          <span className={styles.incidentName} title={problem.description}>
+            {problem.description}
+          </span>
 
-        {options.showTimestamp && (
-          <span className={styles.timestamp}>{formatTimestamp(problem.time)}</span>
-        )}
+          {options.showTimestamp && (
+            <span className={styles.timestamp}>{formatTimestamp(problem.time)}</span>
+          )}
 
-        <button
-          className={cx(styles.btn, isOpen && styles.btnOpen)}
-          onClick={handleBtnClick}
-        >
-          {isOpen ? 'Close' : 'Details'}
-        </button>
+          <button
+            className={cx(styles.btn, isOpen && styles.btnOpen)}
+            onClick={handleBtnClick}
+          >
+            {isOpen ? 'Close' : 'Details'}
+          </button>
+        </div>
       </div>
 
       <ProblemDetails problem={problem} isOpen={isOpen} options={options} />

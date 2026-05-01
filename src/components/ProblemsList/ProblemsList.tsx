@@ -16,7 +16,6 @@ const getStyles = () => ({
     flex-direction: column;
     gap: 8px;
     padding: 8px;
-    min-height: 100%;
     box-sizing: border-box;
   `,
   empty: css`
