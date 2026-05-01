@@ -17,15 +17,7 @@ const getStyles = () => ({
   /* CRÍTICO: nunca usar min-height:100% aqui — força o div a ter a
      altura total do painel, criando área clicável invisível que vaza
      para fora do painel e bloqueia a sidebar do Grafana. */
-  wrapper: css`
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  `,
   list: css`
-    flex: 1;
-    overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -97,16 +89,14 @@ export const ProblemsList: React.FC<Props> = ({ problems, options, onOptionsChan
 
   if (filtered.length === 0) {
     return (
-      <div className={styles.wrapper}>
-        <div className={styles.list}>
-          <div className={styles.empty}>{emptyMessage ?? 'No active problems'}</div>
-        </div>
+      <div className={styles.list}>
+        <div className={styles.empty}>{emptyMessage ?? 'No active problems'}</div>
       </div>
     );
   }
 
   return (
-    <div className={styles.wrapper}>
+    <>
       <div className={styles.list}>
         {paged.map((problem) => {
           const key = problem.eventid || `${problem.triggerid}-${problem.time.getTime()}`;
@@ -127,6 +117,6 @@ export const ProblemsList: React.FC<Props> = ({ problems, options, onOptionsChan
         onPageChange={setCurrentPage}
         onPageSizeChange={handlePageSizeChange}
       />
-    </div>
+    </>
   );
 };

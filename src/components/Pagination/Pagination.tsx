@@ -17,11 +17,9 @@ const getStyles = () => ({
     justify-content: center;
     gap: 12px;
     padding: 10px 16px;
-    border-top: 1px solid #1e2d3d;
-    background: #0d131c;
+    background: transparent;
     font-size: 12px;
     color: #567090;
-    flex-shrink: 0;
   `,
   pageBtn: css`
     padding: 4px 12px;

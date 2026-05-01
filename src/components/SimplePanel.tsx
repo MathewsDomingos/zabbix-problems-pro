@@ -18,7 +18,8 @@ const getStyles = () => ({
     isolation: isolate;
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     background: transparent;
   `,
 });
