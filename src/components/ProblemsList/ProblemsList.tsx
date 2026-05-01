@@ -4,11 +4,11 @@ import { useStyles2 } from '@grafana/ui';
 import { ZabbixProblem, PanelOptions } from '../../types';
 import { ProblemCard } from '../ProblemCard';
 import { MacroCard } from '../MacroCard';
+import { EmptyState } from '../EmptyState/EmptyState';
 
 interface Props {
   problems: ZabbixProblem[];
   options: PanelOptions;
-  emptyMessage?: string;
 }
 
 const getStyles = () => ({
@@ -22,17 +22,9 @@ const getStyles = () => ({
     padding: 8px;
     box-sizing: border-box;
   `,
-  empty: css`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 120px;
-    color: #3a5168;
-    font-size: 13px;
-  `,
 });
 
-export const ProblemsList: React.FC<Props> = ({ problems, options, emptyMessage }) => {
+export const ProblemsList: React.FC<Props> = ({ problems, options }) => {
   const styles = useStyles2(getStyles);
   const [openId, setOpenId] = useState<string | null>(null);
 
@@ -41,11 +33,7 @@ export const ProblemsList: React.FC<Props> = ({ problems, options, emptyMessage 
   };
 
   if (problems.length === 0) {
-    return (
-      <div className={styles.list}>
-        <div className={styles.empty}>{emptyMessage ?? 'No active problems'}</div>
-      </div>
-    );
+    return <EmptyState />;
   }
 
   return (
