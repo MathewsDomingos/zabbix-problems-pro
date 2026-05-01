@@ -73,16 +73,22 @@ const getStyles = () => ({
     padding: 0 8px;
     border-radius: 6px;
     border: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(255, 255, 255, 0.04);
+    background: #0d131c;
     color: rgba(255, 255, 255, 0.5);
     font-size: 11px;
     font-family: monospace;
     cursor: pointer;
     outline: none;
+    appearance: none;
+    -webkit-appearance: none;
     transition: all 0.2s ease;
     &:hover {
       border-color: rgba(255, 255, 255, 0.2);
       color: #fff;
+    }
+    & option {
+      background: #0d131c;
+      color: rgba(255, 255, 255, 0.7);
     }
   `,
 });
