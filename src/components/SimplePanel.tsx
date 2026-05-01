@@ -1,31 +1,36 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { PanelProps } from '@grafana/data';
-import { css } from '@emotion/css';
-import { useStyles2 } from '@grafana/ui';
-import { PanelOptions } from '../types';
+import { PanelOptions, ZabbixProblem } from '../types';
 import { mapDataFrameToProblems } from '../utils/dataMapper';
 import { ProblemsList } from './ProblemsList';
+import { Pagination } from './Pagination/Pagination';
 
 interface Props extends PanelProps<PanelOptions> {}
 
-const getStyles = () => ({
-  container: css`
-    /* CRÍTICO: isolation:isolate cria stacking context que contém todos os
-       z-index internos (ex: ProblemDetails.dot z-index:1). Sem isso, esses
-       valores competem no root context do Grafana e podem bloquear a sidebar.
-       Nunca usar position:fixed/absolute, z-index>0 sem isolation, ou
-       width/height que ultrapasse os limites do painel. */
-    isolation: isolate;
-    width: 100%;
-    height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
-    background: transparent;
-  `,
-});
+function filterAndSort(problems: ZabbixProblem[], options: PanelOptions): ZabbixProblem[] {
+  let result = problems.filter((p) => {
+    const severityCfg = options.severityColors?.[p.severity];
+    if (severityCfg && severityCfg.show === false) {
+      return false;
+    }
+    if (!options.showSuppressed && p.suppressed) {
+      return false;
+    }
+    return true;
+  });
+
+  result = result.slice().sort((a, b) => {
+    if (options.sortBy === 'severity') {
+      return b.severity - a.severity;
+    }
+    return b.time.getTime() - a.time.getTime();
+  });
+
+  return result;
+}
 
 export const SimplePanel: React.FC<Props> = ({ data, width, height, options, onOptionsChange }) => {
-  const styles = useStyles2(getStyles);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const problems = useMemo(() => {
     try {
@@ -36,9 +41,50 @@ export const SimplePanel: React.FC<Props> = ({ data, width, height, options, onO
     }
   }, [data]);
 
+  const filtered = useMemo(() => filterAndSort(problems, options), [problems, options]);
+
+  useEffect(() => setCurrentPage(1), [filtered.length]);
+
+  const pageSize = options.pageSize ?? 10;
+  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+  const safePage = Math.min(currentPage, totalPages);
+  const paged = useMemo(
+    () => filtered.slice((safePage - 1) * pageSize, safePage * pageSize),
+    [filtered, safePage, pageSize]
+  );
+
+  const handlePageSizeChange = (size: number) => {
+    onOptionsChange({ ...options, pageSize: size });
+    setCurrentPage(1);
+  };
+
   return (
-    <div className={styles.container} style={{ width, height, fontSize: `${options.fontSize ?? 100}%` }}>
-      <ProblemsList problems={problems} options={options} onOptionsChange={onOptionsChange} />
+    /* CRÍTICO: isolation:isolate contém todos os z-index internos e impede
+       que vazem para o root context do Grafana, bloqueando a sidebar.
+       display:flex+flexDirection:column com minHeight:0 no filho scrollável
+       é o único layout que mantém a paginação fixo no rodapé sem overflow. */
+    <div
+      style={{
+        isolation: 'isolate',
+        width,
+        height,
+        fontSize: `${options.fontSize ?? 100}%`,
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        background: 'transparent',
+      }}
+    >
+      <div style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden', minHeight: 0 }}>
+        <ProblemsList problems={paged} options={options} />
+      </div>
+      <Pagination
+        currentPage={safePage}
+        totalPages={totalPages}
+        pageSize={pageSize}
+        onPageChange={setCurrentPage}
+        onPageSizeChange={handlePageSizeChange}
+      />
     </div>
   );
 };
