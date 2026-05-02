@@ -67,9 +67,9 @@ const getStyles = () => ({
   tableRow: css`
     display: grid;
     grid-template-columns: var(--table-cols);
-    gap: 12px;
+    gap: 4px;
     padding: 10px 14px;
-    border-bottom: 1px solid #1a2535;
+    border-bottom: none;
     align-items: center;
     cursor: pointer;
     transition: background 0.15s;
