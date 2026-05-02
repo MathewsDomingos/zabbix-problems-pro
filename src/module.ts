@@ -2,6 +2,7 @@ import { FieldConfigProperty, PanelPlugin } from '@grafana/data';
 import { PanelOptions } from './types';
 import { SimplePanel } from './components/SimplePanel';
 import { SeverityColorEditor } from './components/SeverityColorEditor';
+import { ColorPickerEditor } from './components/ColorPickerEditor/ColorPickerEditor';
 import { DEFAULT_OPTIONS } from './constants';
 
 export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
@@ -48,19 +49,23 @@ export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
         defaultValue: DEFAULT_OPTIONS.hideTableHeader,
         showIf: (options) => options.layout === 'table',
       })
-      .addColorPicker({
+      .addCustomEditor({
+        id: 'tableHeaderBg',
         path: 'tableHeaderBg',
         name: 'Header background',
+        editor: ColorPickerEditor,
         defaultValue: DEFAULT_OPTIONS.tableHeaderBg,
-        category: ['Zabbix Problems View'],
         showIf: (options) => options.layout === 'table' && !options.hideTableHeader,
+        category: ['Zabbix Problems View'],
       })
-      .addColorPicker({
+      .addCustomEditor({
+        id: 'tableHeaderColor',
         path: 'tableHeaderColor',
         name: 'Header text color',
+        editor: ColorPickerEditor,
         defaultValue: DEFAULT_OPTIONS.tableHeaderColor,
-        category: ['Zabbix Problems View'],
         showIf: (options) => options.layout === 'table' && !options.hideTableHeader,
+        category: ['Zabbix Problems View'],
       })
       .addSelect({
         path: 'sortBy',
@@ -157,9 +162,11 @@ export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
         defaultValue: DEFAULT_OPTIONS.severityColors,
       })
 
-      .addColorPicker({
+      .addCustomEditor({
+        id: 'timestampColor',
         path: 'timestampColor',
         name: 'Secondary text color',
+        editor: ColorPickerEditor,
         defaultValue: DEFAULT_OPTIONS.timestampColor,
         category: ['Colors'],
       })
