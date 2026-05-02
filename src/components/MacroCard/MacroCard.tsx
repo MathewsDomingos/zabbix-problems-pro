@@ -4,6 +4,7 @@ import { css, cx, keyframes } from '@emotion/css';
 import { useStyles2 } from '@grafana/ui';
 import { ZabbixProblem, PanelOptions } from '../../types';
 import { getSeverityColors, getHighlightStyle } from '../../utils/severityUtils';
+import { getAge } from '../../utils/timeUtils';
 import { SeverityBadge } from '../SeverityBadge';
 import { ProblemDetails } from '../ProblemDetails';
 import { AckModal, AckFormData } from '../AckModal';
@@ -173,6 +174,36 @@ const getStyles = () => ({
     border-color: rgba(65, 216, 130, 0.4);
     background: rgba(65, 216, 130, 0.08);
   `,
+  statusProblem: css`
+    font-size: 0.7em;
+    font-weight: 700;
+    color: #ef4444;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+  `,
+  statusOk: css`
+    font-size: 0.7em;
+    font-weight: 700;
+    color: #41d882;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+  `,
+  ageText: css`
+    font-family: monospace;
+    font-size: 0.7em;
+    color: #567090;
+    white-space: nowrap;
+    flex-shrink: 0;
+  `,
+  opdataText: css`
+    font-size: 0.7em;
+    color: #7fa0c0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 120px;
+    flex-shrink: 0;
+  `,
 });
 
 const MacroCard: React.FC<Props> = ({ problem, isOpen, onToggle, options, style }) => {
@@ -227,6 +258,28 @@ const MacroCard: React.FC<Props> = ({ problem, isOpen, onToggle, options, style 
           <span className={styles.incidentName} title={problem.description}>
             {problem.description}
           </span>
+
+          {options.showStatus && (
+            <span className={problem.value === '0' ? styles.statusOk : styles.statusProblem}>
+              {problem.value === '0' ? 'OK' : 'PROBLEM'}
+            </span>
+          )}
+
+          {options.showAck && problem.acknowledged && (
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+              stroke="#41d882" strokeWidth="3" strokeLinecap="round"
+              style={{ flexShrink: 0 }}>
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          )}
+
+          {options.showAge && (
+            <span className={styles.ageText}>{getAge(problem.time)}</span>
+          )}
+
+          {options.showOperationalData && problem.opdata && (
+            <span className={styles.opdataText}>{problem.opdata}</span>
+          )}
 
           {options.showTags && problem.tags.map((tag, idx) => (
             <span key={idx} className={styles.tagChip}>

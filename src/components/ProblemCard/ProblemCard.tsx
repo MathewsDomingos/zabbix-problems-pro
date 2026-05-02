@@ -10,6 +10,7 @@ injectGlobal`
 `;
 import { ZabbixProblem, PanelOptions } from '../../types';
 import { getSeverityColors, getHighlightStyle } from '../../utils/severityUtils';
+import { getAge } from '../../utils/timeUtils';
 import { SeverityBadge } from '../SeverityBadge';
 import { ProblemDetails } from '../ProblemDetails';
 import { AckModal, AckFormData } from '../AckModal';
@@ -163,6 +164,66 @@ const getStyles = () => ({
     font-size: 0.7em;
     color: #3a5168;
   `,
+  statusProblem: css`
+    font-size: 0.7em;
+    font-weight: 700;
+    color: #ef4444;
+    letter-spacing: 0.5px;
+  `,
+  statusOk: css`
+    font-size: 0.7em;
+    font-weight: 700;
+    color: #41d882;
+    letter-spacing: 0.5px;
+  `,
+  ackBadge: css`
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 0.7em;
+    color: #41d882;
+    background: rgba(65, 216, 130, 0.08);
+    border: 1px solid rgba(65, 216, 130, 0.2);
+    padding: 1px 6px;
+    border-radius: 4px;
+  `,
+  ageBadge: css`
+    font-family: monospace;
+    font-size: 0.7em;
+    color: #567090;
+    background: #111820;
+    border: 1px solid #1a2535;
+    padding: 1px 6px;
+    border-radius: 4px;
+  `,
+  opdataBadge: css`
+    font-size: 0.7em;
+    color: #7fa0c0;
+    background: #111820;
+    border: 1px solid #1a2535;
+    padding: 1px 6px;
+    border-radius: 4px;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  `,
+  groupBadge: css`
+    font-size: 0.7em;
+    color: #4a6578;
+    background: #0f1820;
+    border: 1px solid #1a2535;
+    padding: 1px 6px;
+    border-radius: 4px;
+  `,
+  datasourceBadge: css`
+    font-size: 0.7em;
+    color: #3a5168;
+    background: #0a1018;
+    border: 1px solid #1a2535;
+    padding: 1px 6px;
+    border-radius: 4px;
+  `,
   cardActions: css`
     display: flex;
     align-items: center;
@@ -235,7 +296,14 @@ export const ProblemCard: React.FC<Props> = ({ problem, isOpen, onToggle, option
   const highlightStyle = getHighlightStyle(customColor ?? '#6b7280', options);
 
   const hasTagsVisible = options.showTags && problem.tags.length > 0;
-  const hasFooterContent = hasTagsVisible || options.showEventId;
+  const hasNewFooterFields =
+    options.showStatus ||
+    (options.showAck && problem.acknowledged) ||
+    options.showAge ||
+    (options.showOperationalData && !!problem.opdata) ||
+    (options.showTableHostGroups && problem.groups.length > 0) ||
+    (options.showDatasourceName && !!problem.datasourceName);
+  const hasFooterContent = hasTagsVisible || options.showEventId || hasNewFooterFields;
   const showDivider = hasTagsVisible && options.showEventId;
 
   return (
@@ -315,6 +383,38 @@ export const ProblemCard: React.FC<Props> = ({ problem, isOpen, onToggle, option
 
               {options.showEventId && (
                 <span className={styles.eventId}>#{problem.eventid}</span>
+              )}
+
+              {options.showStatus && (
+                <span className={problem.value === '0' ? styles.statusOk : styles.statusProblem}>
+                  {problem.value === '0' ? 'OK' : 'PROBLEM'}
+                </span>
+              )}
+
+              {options.showAck && problem.acknowledged && (
+                <span className={styles.ackBadge}>
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                    stroke="#41d882" strokeWidth="3" strokeLinecap="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  Ack
+                </span>
+              )}
+
+              {options.showAge && (
+                <span className={styles.ageBadge}>{getAge(problem.time)}</span>
+              )}
+
+              {options.showOperationalData && problem.opdata && (
+                <span className={styles.opdataBadge}>{problem.opdata}</span>
+              )}
+
+              {options.showTableHostGroups && problem.groups.length > 0 && (
+                <span className={styles.groupBadge}>{problem.groups[0]}</span>
+              )}
+
+              {options.showDatasourceName && problem.datasourceName && (
+                <span className={styles.datasourceBadge}>{problem.datasourceName}</span>
               )}
             </div>
           )}

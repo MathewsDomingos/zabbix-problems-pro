@@ -194,7 +194,6 @@ export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
         description: 'Show PROBLEM / OK status text',
         category: ['Card Fields'],
         defaultValue: DEFAULT_OPTIONS.showStatus,
-        showIf: (options) => options.layout === 'table',
       })
       .addBooleanSwitch({
         path: 'showAck',
@@ -202,7 +201,6 @@ export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
         description: 'Show acknowledged indicator',
         category: ['Card Fields'],
         defaultValue: DEFAULT_OPTIONS.showAck,
-        showIf: (options) => options.layout === 'table',
       })
       .addBooleanSwitch({
         path: 'showAge',
@@ -210,7 +208,6 @@ export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
         description: 'Show time elapsed since problem started',
         category: ['Card Fields'],
         defaultValue: DEFAULT_OPTIONS.showAge,
-        showIf: (options) => options.layout === 'table',
       })
       .addBooleanSwitch({
         path: 'showOperationalData',
@@ -218,7 +215,6 @@ export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
         description: 'Show Zabbix operational data (opdata)',
         category: ['Card Fields'],
         defaultValue: DEFAULT_OPTIONS.showOperationalData,
-        showIf: (options) => options.layout === 'table',
       })
       .addBooleanSwitch({
         path: 'showTableHostGroups',
@@ -226,7 +222,6 @@ export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
         description: 'Show host group names',
         category: ['Card Fields'],
         defaultValue: DEFAULT_OPTIONS.showTableHostGroups,
-        showIf: (options) => options.layout === 'table',
       })
       .addBooleanSwitch({
         path: 'showDatasourceName',
@@ -234,7 +229,6 @@ export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
         description: 'Show the datasource name',
         category: ['Card Fields'],
         defaultValue: DEFAULT_OPTIONS.showDatasourceName,
-        showIf: (options) => options.layout === 'table',
       })
 
       // ─── Section 4: Details Fields ──────────────────────────────────────

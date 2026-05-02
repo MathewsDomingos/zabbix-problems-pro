@@ -59,10 +59,10 @@ export const DEFAULT_OPTIONS: PanelOptions = {
   showEventId: true,
   showSuppressed: true,
 
-  // Card Fields (Table-only)
+  // Card Fields (all layouts)
   showStatus: false,
-  showAck: true,
-  showAge: true,
+  showAck: false,
+  showAge: false,
   showOperationalData: false,
   showTableHostGroups: false,
   showDatasourceName: false,
