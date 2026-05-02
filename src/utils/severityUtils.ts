@@ -37,8 +37,9 @@ export function getHighlightStyle(severityColor: string, options: PanelOptions):
 
   if (options.highlightStyle === 'gradient') {
     const deg = options.highlightDirection ?? 90;
+    const alphaEnd = alpha * 0.4;
     return {
-      background: `linear-gradient(${deg}deg, ${rgba} 0%, transparent 60%)`,
+      background: `linear-gradient(${deg}deg, rgba(${r}, ${g}, ${b}, ${alpha}) 0%, rgba(${r}, ${g}, ${b}, ${alphaEnd}) 100%)`,
       borderLeft: 'none',
     };
   }

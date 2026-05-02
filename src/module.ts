@@ -99,8 +99,8 @@ export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
         category: ['Zabbix Problems View'],
         defaultValue: DEFAULT_OPTIONS.highlightIntensity,
         settings: {
-          min: 5,
-          max: 30,
+          min: 0,
+          max: 100,
           step: 1,
         },
         showIf: (options) => options.highlightBackground === true,
