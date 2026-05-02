@@ -304,7 +304,6 @@ export const ProblemCard: React.FC<Props> = ({ problem, isOpen, onToggle, option
     (options.showTableHostGroups && problem.groups.length > 0) ||
     (options.showDatasourceName && !!problem.datasourceName);
   const hasFooterContent = hasTagsVisible || options.showEventId || hasNewFooterFields;
-  const showDivider = hasTagsVisible && options.showEventId;
 
   return (
     <div className={styles.card} style={style}>
@@ -368,9 +367,15 @@ export const ProblemCard: React.FC<Props> = ({ problem, isOpen, onToggle, option
             <div className={styles.description}>{problem.comments}</div>
           )}
 
-          {/* Footer: tags + event ID (only rendered when there is content) */}
+          {/* Footer (only rendered when there is content) */}
           {hasFooterContent && (
             <div className={styles.footer}>
+              {options.showStatus && (
+                <span className={problem.value === '0' ? styles.statusOk : styles.statusProblem}>
+                  {problem.value === '0' ? 'OK' : 'PROBLEM'}
+                </span>
+              )}
+
               {hasTagsVisible &&
                 problem.tags.map((tag, idx) => (
                   <span key={idx} className={styles.tagChip}>
@@ -378,18 +383,6 @@ export const ProblemCard: React.FC<Props> = ({ problem, isOpen, onToggle, option
                     {tag.value && <span className={styles.tagChipValue}>:{tag.value}</span>}
                   </span>
                 ))}
-
-              {showDivider && <span className={styles.dividerDot} />}
-
-              {options.showEventId && (
-                <span className={styles.eventId}>#{problem.eventid}</span>
-              )}
-
-              {options.showStatus && (
-                <span className={problem.value === '0' ? styles.statusOk : styles.statusProblem}>
-                  {problem.value === '0' ? 'OK' : 'PROBLEM'}
-                </span>
-              )}
 
               {options.showAck && problem.acknowledged && (
                 <span className={styles.ackBadge}>
@@ -409,12 +402,19 @@ export const ProblemCard: React.FC<Props> = ({ problem, isOpen, onToggle, option
                 <span className={styles.opdataBadge}>{problem.opdata}</span>
               )}
 
-              {options.showTableHostGroups && problem.groups.length > 0 && (
+              {options.showTableHostGroups && problem.groups[0] && (
                 <span className={styles.groupBadge}>{problem.groups[0]}</span>
               )}
 
               {options.showDatasourceName && problem.datasourceName && (
                 <span className={styles.datasourceBadge}>{problem.datasourceName}</span>
+              )}
+
+              {options.showEventId && (
+                <>
+                  <span className={styles.dividerDot} />
+                  <span className={styles.eventId}>#{problem.eventid}</span>
+                </>
               )}
             </div>
           )}

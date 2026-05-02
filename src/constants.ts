@@ -55,9 +55,9 @@ export const DEFAULT_OPTIONS: PanelOptions = {
   showHostName: true,
   showTimestamp: true,
   showDescription: true,
-  showTags: true,
-  showEventId: true,
-  showSuppressed: true,
+  showTags: false,
+  showEventId: false,
+  showSuppressed: false,
 
   // Card Fields (all layouts)
   showStatus: false,
