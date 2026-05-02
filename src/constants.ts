@@ -114,6 +114,8 @@ export const DEFAULT_OPTIONS: PanelOptions = {
   showDatasourceName: false,
 
   hideTableHeader: false,
+  tableHeaderBg: '#1a2535',
+  tableHeaderColor: '#3a5168',
 
   // Details Fields
   showTriggerExpression: true,

@@ -72,6 +72,8 @@ export interface PanelOptions {
   showDatasourceName: boolean;
 
   hideTableHeader: boolean;
+  tableHeaderBg: string;
+  tableHeaderColor: string;
 
   // Section 4 — Details Fields
   showTriggerExpression: boolean;

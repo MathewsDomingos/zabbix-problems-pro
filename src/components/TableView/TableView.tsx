@@ -57,11 +57,9 @@ const getStyles = () => ({
     font-weight: 700;
     letter-spacing: 0.8px;
     text-transform: uppercase;
-    color: #3a5168;
     user-select: none;
     position: sticky;
     top: 0;
-    background: #0f1419;
     z-index: 1;
   `,
   tableRow: css`
@@ -448,7 +446,7 @@ export const TableView: React.FC<TableViewProps> = ({ problems, options, openId,
       style={{ '--table-cols': buildTableColumns(options) } as React.CSSProperties}
     >
       {!options.hideTableHeader && (
-        <div className={styles.tableHeader}>
+        <div className={styles.tableHeader} style={{ background: options.tableHeaderBg, color: options.tableHeaderColor }}>
           {options.showSeverityBadge   && <div className={styles.colSeverity}>Severity</div>}
           {options.showHostName        && <div className={styles.colHost}>Host</div>}
           {options.showStatus          && <div className={styles.colStatus}>Status</div>}

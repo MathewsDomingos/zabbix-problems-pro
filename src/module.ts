@@ -48,6 +48,20 @@ export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
         defaultValue: DEFAULT_OPTIONS.hideTableHeader,
         showIf: (options) => options.layout === 'table',
       })
+      .addColorPicker({
+        path: 'tableHeaderBg',
+        name: 'Header background',
+        defaultValue: DEFAULT_OPTIONS.tableHeaderBg,
+        category: ['Zabbix Problems View'],
+        showIf: (options) => options.layout === 'table' && !options.hideTableHeader,
+      })
+      .addColorPicker({
+        path: 'tableHeaderColor',
+        name: 'Header text color',
+        defaultValue: DEFAULT_OPTIONS.tableHeaderColor,
+        category: ['Zabbix Problems View'],
+        showIf: (options) => options.layout === 'table' && !options.hideTableHeader,
+      })
       .addSelect({
         path: 'sortBy',
         name: 'Sort by',
