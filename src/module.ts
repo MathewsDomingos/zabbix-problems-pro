@@ -2,7 +2,6 @@ import { FieldConfigProperty, PanelPlugin } from '@grafana/data';
 import { PanelOptions } from './types';
 import { SimplePanel } from './components/SimplePanel';
 import { SeverityColorEditor } from './components/SeverityColorEditor';
-import { ResetOptionsButton } from './components/ResetOptionsButton';
 import { DEFAULT_OPTIONS } from './constants';
 
 export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
@@ -183,14 +182,5 @@ export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
         category: ['Details Fields'],
         defaultValue: DEFAULT_OPTIONS.zabbixBaseUrl,
       })
-
-      // ─── Section 5: Reset ───────────────────────────────────────────────
-      .addCustomEditor({
-        id: 'resetOptions',
-        path: 'resetOptions',
-        name: '',
-        description: '',
-        editor: ResetOptionsButton,
-        category: ['Reset'],
-      });
+;
   });

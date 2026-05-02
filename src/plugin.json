@@ -1,11 +1,11 @@
 {
   "$schema": "https://raw.githubusercontent.com/grafana/grafana/main/docs/sources/developers/plugins/plugin.schema.json",
   "type": "panel",
-  "name": "Zabbix_problems_pro",
+  "name": "Zabbix Problems Pro",
   "id": "matheusdomingosjlcp-zabbixproblemspro-panel",
   "info": {
-    "keywords": ["panel"],
-    "description": "",
+    "keywords": ["panel", "zabbix", "problems", "monitoring", "alerts"],
+    "description": "Painel visual para problemas do Zabbix com cards interativos, accordion de detalhes e filtros configuráveis",
     "author": {
       "name": "Matheus domingos jlcp"
     },
@@ -19,7 +19,14 @@
     "updated": "%TODAY%"
   },
   "dependencies": {
-    "grafanaDependency": ">=12.3.0",
-    "plugins": []
+    "grafanaDependency": ">=10.0.0",
+    "plugins": [
+      {
+        "type": "datasource",
+        "name": "Zabbix",
+        "id": "alexanderzobnin-zabbix-datasource",
+        "version": ">=4.0.0"
+      }
+    ]
   }
 }

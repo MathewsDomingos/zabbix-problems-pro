@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git commit -m ' *)"
+    ],
+    "additionalDirectories": [
+      "/home/mateus_domingos/zabbix-problems-pro/matheusdomingosjlcp-zabbixproblemspro-panel/src/components"
+    ]
+  }
+}

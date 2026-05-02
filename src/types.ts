@@ -64,7 +64,4 @@ export interface PanelOptions {
   showHostGroups: boolean;
   showZabbixLink: boolean;
   zabbixBaseUrl: string;
-
-  // Dummy field for the reset button editor (no runtime value)
-  resetOptions?: unknown;
 }
