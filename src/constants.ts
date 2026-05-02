@@ -25,15 +25,18 @@ export const SEVERITY_LABELS: Record<number, string> = {
 };
 
 export const DEFAULT_OPTIONS: PanelOptions = {
+  // Style
   showScrollbar: true,
   showPagination: true,
 
+  // Zabbix Problems View
   layout: 'list',
   sortBy: 'lastChange',
   fontSize: 100,
   pageSize: 10,
   highlightBackground: false,
 
+  // Colors
   severityColors: {
     0: { label: 'Not classified', color: '#6b7280', show: true },
     1: { label: 'Information',    color: '#3b82f6', show: true },
@@ -43,14 +46,16 @@ export const DEFAULT_OPTIONS: PanelOptions = {
     5: { label: 'Disaster',       color: '#dc2626', show: true },
   },
 
+  // Card Fields
   showSeverityBadge: true,
   showHostName: true,
   showTimestamp: true,
   showDescription: true,
-  showTags: false,
-  showEventId: false,
+  showTags: true,
+  showEventId: true,
   showSuppressed: true,
 
+  // Details Fields
   showTriggerExpression: true,
   showComment: true,
   showMonitoredItems: true,

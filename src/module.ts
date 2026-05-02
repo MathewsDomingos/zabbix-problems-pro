@@ -5,8 +5,6 @@ import { SeverityColorEditor } from './components/SeverityColorEditor';
 import { ResetOptionsButton } from './components/ResetOptionsButton';
 import { DEFAULT_OPTIONS } from './constants';
 
-const defaultOptions = DEFAULT_OPTIONS;
-
 export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
   .useFieldConfig({
     disableStandardOptions: Object.values(FieldConfigProperty) as FieldConfigProperty[],
@@ -19,14 +17,14 @@ export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
         name: 'Use Grafana scrollbar',
         description: 'Show or hide the panel scrollbar',
         category: ['Style'],
-        defaultValue: defaultOptions.showScrollbar,
+        defaultValue: DEFAULT_OPTIONS.showScrollbar,
       })
       .addBooleanSwitch({
         path: 'showPagination',
         name: 'Show pagination',
         description: 'Show or hide the pagination controls',
         category: ['Style'],
-        defaultValue: defaultOptions.showPagination,
+        defaultValue: DEFAULT_OPTIONS.showPagination,
       })
 
       // ─── Section 1: Zabbix Problems View ───────────────────────────────
@@ -34,7 +32,7 @@ export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
         path: 'layout',
         name: 'Layout',
         category: ['Zabbix Problems View'],
-        defaultValue: defaultOptions.layout,
+        defaultValue: DEFAULT_OPTIONS.layout,
         settings: {
           options: [
             { value: 'list',  label: 'List'  },
@@ -46,7 +44,7 @@ export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
         path: 'sortBy',
         name: 'Sort by',
         category: ['Zabbix Problems View'],
-        defaultValue: defaultOptions.sortBy,
+        defaultValue: DEFAULT_OPTIONS.sortBy,
         settings: {
           options: [
             { value: 'lastChange', label: 'Last change' },
@@ -59,7 +57,7 @@ export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
         path: 'fontSize',
         name: 'Font size',
         category: ['Zabbix Problems View'],
-        defaultValue: defaultOptions.fontSize,
+        defaultValue: DEFAULT_OPTIONS.fontSize,
         settings: {
           options: [
             { value: 80, label: '80%' },
@@ -74,14 +72,14 @@ export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
         path: 'pageSize',
         name: 'Page size',
         category: ['Zabbix Problems View'],
-        defaultValue: defaultOptions.pageSize,
+        defaultValue: DEFAULT_OPTIONS.pageSize,
         settings: { min: 1, max: 500 },
       })
       .addBooleanSwitch({
         path: 'highlightBackground',
         name: 'Highlight background',
         category: ['Zabbix Problems View'],
-        defaultValue: defaultOptions.highlightBackground,
+        defaultValue: DEFAULT_OPTIONS.highlightBackground,
       })
 
       // ─── Section 2: Colors ──────────────────────────────────────────────
@@ -91,14 +89,7 @@ export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
         name: 'Problem colors',
         category: ['Colors'],
         editor: SeverityColorEditor,
-        defaultValue: {
-          0: { label: 'Not classified', color: '#6b7280', show: true },
-          1: { label: 'Information',    color: '#3b82f6', show: true },
-          2: { label: 'Warning',        color: '#eab308', show: true },
-          3: { label: 'Average',        color: '#f97316', show: true },
-          4: { label: 'High',           color: '#ef4444', show: true },
-          5: { label: 'Disaster',       color: '#dc2626', show: true },
-        },
+        defaultValue: DEFAULT_OPTIONS.severityColors,
       })
 
       // ─── Section 3: Card Fields ─────────────────────────────────────────
@@ -107,44 +98,44 @@ export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
         name: 'Severity badge',
         description: 'Configure which fields are visible on the collapsed card',
         category: ['Card Fields'],
-        defaultValue: true,
+        defaultValue: DEFAULT_OPTIONS.showSeverityBadge,
       })
       .addBooleanSwitch({
         path: 'showHostName',
         name: 'Host name',
         category: ['Card Fields'],
-        defaultValue: true,
+        defaultValue: DEFAULT_OPTIONS.showHostName,
       })
       .addBooleanSwitch({
         path: 'showTimestamp',
         name: 'Timestamp',
         category: ['Card Fields'],
-        defaultValue: true,
+        defaultValue: DEFAULT_OPTIONS.showTimestamp,
       })
       .addBooleanSwitch({
         path: 'showDescription',
         name: 'Description',
         category: ['Card Fields'],
-        defaultValue: true,
+        defaultValue: DEFAULT_OPTIONS.showDescription,
         showIf: (options) => options.layout === 'list',
       })
       .addBooleanSwitch({
         path: 'showTags',
         name: 'Tags',
         category: ['Card Fields'],
-        defaultValue: false,
+        defaultValue: DEFAULT_OPTIONS.showTags,
       })
       .addBooleanSwitch({
         path: 'showEventId',
         name: 'Event ID',
         category: ['Card Fields'],
-        defaultValue: false,
+        defaultValue: DEFAULT_OPTIONS.showEventId,
       })
       .addBooleanSwitch({
         path: 'showSuppressed',
         name: 'Show suppressed',
         category: ['Card Fields'],
-        defaultValue: true,
+        defaultValue: DEFAULT_OPTIONS.showSuppressed,
       })
 
       // ─── Section 4: Details Fields ──────────────────────────────────────
@@ -153,44 +144,44 @@ export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
         name: 'Trigger expression',
         description: 'Configure which fields are visible when a card is expanded',
         category: ['Details Fields'],
-        defaultValue: true,
+        defaultValue: DEFAULT_OPTIONS.showTriggerExpression,
       })
       .addBooleanSwitch({
         path: 'showComment',
         name: 'Comment',
         category: ['Details Fields'],
-        defaultValue: true,
+        defaultValue: DEFAULT_OPTIONS.showComment,
       })
       .addBooleanSwitch({
         path: 'showMonitoredItems',
         name: 'Monitored items',
         category: ['Details Fields'],
-        defaultValue: true,
+        defaultValue: DEFAULT_OPTIONS.showMonitoredItems,
       })
       .addBooleanSwitch({
         path: 'showDetailTags',
         name: 'Tags',
         category: ['Details Fields'],
-        defaultValue: true,
+        defaultValue: DEFAULT_OPTIONS.showDetailTags,
       })
       .addBooleanSwitch({
         path: 'showHostGroups',
         name: 'Host groups',
         category: ['Details Fields'],
-        defaultValue: true,
+        defaultValue: DEFAULT_OPTIONS.showHostGroups,
       })
       .addBooleanSwitch({
         path: 'showZabbixLink',
         name: 'Zabbix direct link',
         category: ['Details Fields'],
-        defaultValue: true,
+        defaultValue: DEFAULT_OPTIONS.showZabbixLink,
       })
       .addTextInput({
         path: 'zabbixBaseUrl',
         name: 'Zabbix base URL',
         description: 'Used to build direct event links. E.g.: https://zabbix.company.com',
         category: ['Details Fields'],
-        defaultValue: '',
+        defaultValue: DEFAULT_OPTIONS.zabbixBaseUrl,
       })
 
       // ─── Section 5: Reset ───────────────────────────────────────────────
