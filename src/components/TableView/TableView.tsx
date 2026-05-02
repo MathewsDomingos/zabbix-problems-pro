@@ -125,7 +125,6 @@ const getStyles = () => ({
   colTime: css`
     font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
     font-size: 0.75em;
-    color: #4a6178;
     white-space: nowrap;
   `,
   colActions: css`
