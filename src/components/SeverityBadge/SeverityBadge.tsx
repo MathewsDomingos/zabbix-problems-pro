@@ -17,7 +17,7 @@ interface Props {
 
 const getStyles = () => ({
   badge: css`
-    font-size: 10px;
+    font-size: 0.7em;
     font-weight: 700;
     letter-spacing: 0.5px;
     padding: 2px 9px;

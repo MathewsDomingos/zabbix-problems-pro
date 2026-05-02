@@ -64,7 +64,7 @@ const getStyles = () => ({
     min-width: 0;
   `,
   label: css`
-    font-size: 10px;
+    font-size: 0.7em;
     font-weight: 700;
     letter-spacing: 0.9px;
     text-transform: uppercase;
@@ -73,7 +73,7 @@ const getStyles = () => ({
   `,
   expr: css`
     font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
-    font-size: 11px;
+    font-size: 0.75em;
     color: #5a8090;
     background: #0a1018;
     border: 1px solid #1a2535;
@@ -83,7 +83,7 @@ const getStyles = () => ({
     word-break: break-all;
   `,
   comment: css`
-    font-size: 12.5px;
+    font-size: 0.8em;
     color: #7090a0;
     line-height: 1.65;
     background: #0a1018;
@@ -112,17 +112,17 @@ const getStyles = () => ({
   `,
   itemKey: css`
     font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
-    font-size: 11px;
+    font-size: 0.75em;
     color: #4a7090;
   `,
   itemName: css`
-    font-size: 11.5px;
+    font-size: 0.75em;
     color: #567890;
     margin-top: 2px;
   `,
   itemValue: css`
     font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
-    font-size: 12px;
+    font-size: 0.75em;
     font-weight: 500;
     padding: 3px 10px;
     border-radius: 4px;
@@ -139,7 +139,7 @@ const getStyles = () => ({
   `,
   detailTag: css`
     font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
-    font-size: 11px;
+    font-size: 0.75em;
     padding: 3px 10px;
     border-radius: 4px;
     background: #0a1018;
@@ -160,7 +160,7 @@ const getStyles = () => ({
     flex-wrap: wrap;
   `,
   groupChip: css`
-    font-size: 11.5px;
+    font-size: 0.75em;
     padding: 3px 10px;
     border-radius: 4px;
     background: #0a1018;
@@ -172,7 +172,7 @@ const getStyles = () => ({
     align-items: center;
     gap: 7px;
     font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
-    font-size: 11px;
+    font-size: 0.75em;
     color: #4a7fa5;
     text-decoration: none;
     background: #0a1018;

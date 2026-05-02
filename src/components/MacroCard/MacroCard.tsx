@@ -79,7 +79,7 @@ const getStyles = () => ({
   `,
   hostChip: css`
     font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
-    font-size: 11px;
+    font-size: 0.75em;
     color: #7fa0c0;
     background: #1a2535;
     padding: 2px 8px;
@@ -89,7 +89,7 @@ const getStyles = () => ({
     flex-shrink: 0;
   `,
   suppressedBadge: css`
-    font-size: 10px;
+    font-size: 0.7em;
     background: #1a2030;
     color: #4a6080;
     border: 1px solid #1e2d3d;
@@ -100,7 +100,7 @@ const getStyles = () => ({
   `,
   incidentName: css`
     flex: 1;
-    font-size: 13px;
+    font-size: 0.9em;
     font-weight: 500;
     color: #ccd9e6;
     white-space: nowrap;
@@ -110,7 +110,7 @@ const getStyles = () => ({
   `,
   tagChip: css`
     font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
-    font-size: 10px;
+    font-size: 0.7em;
     padding: 2px 7px;
     border-radius: 4px;
     background: #111820;
@@ -124,14 +124,14 @@ const getStyles = () => ({
   `,
   eventId: css`
     font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
-    font-size: 10px;
+    font-size: 0.7em;
     color: #3a5168;
     white-space: nowrap;
     flex-shrink: 0;
   `,
   timestamp: css`
     font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
-    font-size: 11px;
+    font-size: 0.75em;
     color: #4a6178;
     white-space: nowrap;
     flex-shrink: 0;

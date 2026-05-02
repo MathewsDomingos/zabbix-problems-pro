@@ -92,7 +92,7 @@ const getStyles = () => ({
   `,
   hostChip: css`
     font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
-    font-size: 11px;
+    font-size: 0.75em;
     color: #7fa0c0;
     background: #1a2535;
     padding: 2px 8px;
@@ -102,7 +102,7 @@ const getStyles = () => ({
   time: css`
     margin-left: auto;
     font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
-    font-size: 11px;
+    font-size: 0.75em;
     color: #4a6178;
     white-space: nowrap;
   `,
@@ -115,7 +115,7 @@ const getStyles = () => ({
   name: css`
     flex: 1;
     min-width: 0;
-    font-size: 13.5px;
+    font-size: 0.9em;
     font-weight: 500;
     color: #ccd9e6;
     line-height: 1.4;
@@ -124,7 +124,7 @@ const getStyles = () => ({
     text-overflow: ellipsis;
   `,
   description: css`
-    font-size: 12px;
+    font-size: 0.8em;
     color: #567090;
     line-height: 1.55;
     display: -webkit-box;
@@ -141,7 +141,7 @@ const getStyles = () => ({
   `,
   tagChip: css`
     font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
-    font-size: 10px;
+    font-size: 0.7em;
     padding: 2px 7px;
     border-radius: 4px;
     background: #111820;
@@ -152,7 +152,7 @@ const getStyles = () => ({
     color: #7fa0c0;
   `,
   suppBadge: css`
-    font-size: 10px;
+    font-size: 0.7em;
     background: #1a2030;
     color: #4a6080;
     border: 1px solid #1e2d3d;
@@ -168,7 +168,7 @@ const getStyles = () => ({
   `,
   eventId: css`
     font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
-    font-size: 10px;
+    font-size: 0.7em;
     color: #3a5168;
   `,
   cardActions: css`
