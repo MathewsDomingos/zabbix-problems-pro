@@ -105,7 +105,7 @@ export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
         },
         showIf: (options) => options.highlightBackground === true,
       })
-      .addSelect({
+      .addRadio({
         path: 'highlightDirection',
         name: 'Direction',
         category: ['Zabbix Problems View'],
