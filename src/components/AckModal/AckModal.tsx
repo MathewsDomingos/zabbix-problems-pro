@@ -177,14 +177,14 @@ export const AckModal = ({ problem: _problem, onClose, onSubmit }: AckModalProps
     onClose();
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && e.ctrlKey) { handleSubmit(); }
-    if (e.key === 'Escape') { onClose(); }
-  };
-
   return (
     <div className={styles.overlay} onClick={onClose}>
-      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+      <div
+        className={styles.modal}
+        onClick={(e) => e.stopPropagation()}
+        onMouseDown={(e) => e.stopPropagation()}
+        onKeyDown={(e) => e.stopPropagation()}
+      >
 
         <div className={styles.header}>
           <div className={styles.headerTitle}>
@@ -209,7 +209,15 @@ export const AckModal = ({ problem: _problem, onClose, onSubmit }: AckModalProps
             placeholder="Message"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            onKeyDown={handleKeyDown}
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
+            onKeyDown={(e) => {
+              e.stopPropagation();
+              if (e.key === 'Enter' && e.ctrlKey) { handleSubmit(); }
+              if (e.key === 'Escape') { onClose(); }
+            }}
+            onKeyUp={(e) => e.stopPropagation()}
+            onKeyPress={(e) => e.stopPropagation()}
             rows={4}
             autoFocus
           />
