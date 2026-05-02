@@ -188,6 +188,54 @@ export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
         category: ['Card Fields'],
         defaultValue: DEFAULT_OPTIONS.showSuppressed,
       })
+      .addBooleanSwitch({
+        path: 'showStatus',
+        name: 'Status',
+        description: 'Show PROBLEM / OK status text',
+        category: ['Card Fields'],
+        defaultValue: DEFAULT_OPTIONS.showStatus,
+        showIf: (options) => options.layout === 'table',
+      })
+      .addBooleanSwitch({
+        path: 'showAck',
+        name: 'Ack',
+        description: 'Show acknowledged indicator',
+        category: ['Card Fields'],
+        defaultValue: DEFAULT_OPTIONS.showAck,
+        showIf: (options) => options.layout === 'table',
+      })
+      .addBooleanSwitch({
+        path: 'showAge',
+        name: 'Age',
+        description: 'Show time elapsed since problem started',
+        category: ['Card Fields'],
+        defaultValue: DEFAULT_OPTIONS.showAge,
+        showIf: (options) => options.layout === 'table',
+      })
+      .addBooleanSwitch({
+        path: 'showOperationalData',
+        name: 'Operational data',
+        description: 'Show Zabbix operational data (opdata)',
+        category: ['Card Fields'],
+        defaultValue: DEFAULT_OPTIONS.showOperationalData,
+        showIf: (options) => options.layout === 'table',
+      })
+      .addBooleanSwitch({
+        path: 'showTableHostGroups',
+        name: 'Host groups',
+        description: 'Show host group names',
+        category: ['Card Fields'],
+        defaultValue: DEFAULT_OPTIONS.showTableHostGroups,
+        showIf: (options) => options.layout === 'table',
+      })
+      .addBooleanSwitch({
+        path: 'showDatasourceName',
+        name: 'Datasource name',
+        description: 'Show the datasource name',
+        category: ['Card Fields'],
+        defaultValue: DEFAULT_OPTIONS.showDatasourceName,
+        showIf: (options) => options.layout === 'table',
+      })
 
       // ─── Section 4: Details Fields ──────────────────────────────────────
       .addBooleanSwitch({

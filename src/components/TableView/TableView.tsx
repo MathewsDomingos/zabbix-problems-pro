@@ -6,6 +6,7 @@ import { ZabbixProblem, PanelOptions } from '../../types';
 import { SeverityBadge } from '../SeverityBadge';
 import { ProblemDetails } from '../ProblemDetails';
 import { AckModal, AckFormData } from '../AckModal';
+import { getAge } from '../../utils/timeUtils';
 
 const MONTHS_PT = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
 
@@ -21,12 +22,17 @@ function formatTimestamp(date: Date): string {
 
 const buildTableColumns = (options: PanelOptions): string => {
   const cols: string[] = [];
-  if (options.showSeverityBadge) { cols.push('110px'); }
-  if (options.showHostName)      { cols.push('140px'); }
+  if (options.showSeverityBadge)   { cols.push('110px'); }
+  if (options.showHostName)        { cols.push('140px'); }
+  if (options.showStatus)          { cols.push('90px');  }
   cols.push('1fr');
-  if (options.showTags)          { cols.push('160px'); }
-  cols.push('32px');
-  if (options.showTimestamp)     { cols.push('120px'); }
+  if (options.showOperationalData) { cols.push('120px'); }
+  if (options.showTags)            { cols.push('150px'); }
+  if (options.showTableHostGroups) { cols.push('120px'); }
+  if (options.showDatasourceName)  { cols.push('110px'); }
+  if (options.showAck)             { cols.push('36px');  }
+  if (options.showAge)             { cols.push('80px');  }
+  if (options.showTimestamp)       { cols.push('120px'); }
   cols.push('68px');
   return cols.join(' ');
 };
@@ -88,17 +94,35 @@ const getStyles = () => ({
   colHost: css`
     min-width: 0;
   `,
+  colStatus: css`
+    min-width: 0;
+  `,
   colProblem: css`
+    min-width: 0;
+    overflow: hidden;
+  `,
+  colOpdata: css`
     min-width: 0;
     overflow: hidden;
   `,
   colTags: css`
     min-width: 0;
   `,
+  colGroups: css`
+    min-width: 0;
+    overflow: hidden;
+  `,
+  colDatasource: css`
+    min-width: 0;
+    overflow: hidden;
+  `,
   colAck: css`
     display: flex;
     align-items: center;
     justify-content: center;
+  `,
+  colAge: css`
+    min-width: 0;
   `,
   colTime: css`
     font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
@@ -143,6 +167,18 @@ const getStyles = () => ({
     white-space: nowrap;
     margin-left: 4px;
   `,
+  statusProblem: css`
+    font-size: 0.7em;
+    font-weight: 700;
+    color: #ef4444;
+    letter-spacing: 0.5px;
+  `,
+  statusOk: css`
+    font-size: 0.7em;
+    font-weight: 700;
+    color: #41d882;
+    letter-spacing: 0.5px;
+  `,
   tagsRow: css`
     display: flex;
     flex-wrap: wrap;
@@ -162,6 +198,40 @@ const getStyles = () => ({
     font-size: 0.7em;
     color: #3a5168;
     padding: 1px 4px;
+  `,
+  groupsRow: css`
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+  `,
+  groupChip: css`
+    font-size: 0.7em;
+    color: #567090;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  `,
+  ageText: css`
+    font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+    font-size: 0.75em;
+    color: #567090;
+    white-space: nowrap;
+  `,
+  opdata: css`
+    font-size: 0.75em;
+    color: #7fa0c0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+  `,
+  datasourceName: css`
+    font-size: 0.7em;
+    color: #3a5168;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
   `,
   iconBtn: css`
     display: flex;
@@ -216,6 +286,7 @@ const TableRow: React.FC<TableRowProps> = ({ problem, options, isOpen, onToggle,
   const styles = useStyles2(getStyles);
   const [showAckModal, setShowAckModal] = useState(false);
   const customColor = options.severityColors?.[problem.severity]?.color;
+  const isProblem = problem.value !== '0';
 
   const handleAckSubmit = async (formData: AckFormData) => {
     console.log('[ZabbixProblemsPro] Acknowledge submitted:', {
@@ -249,9 +320,23 @@ const TableRow: React.FC<TableRowProps> = ({ problem, options, isOpen, onToggle,
           </div>
         )}
 
+        {options.showStatus && (
+          <div className={styles.colStatus}>
+            <span className={isProblem ? styles.statusProblem : styles.statusOk}>
+              {isProblem ? 'PROBLEM' : 'OK'}
+            </span>
+          </div>
+        )}
+
         <div className={styles.colProblem}>
           <span className={styles.problemName} title={problem.description}>{problem.description}</span>
         </div>
+
+        {options.showOperationalData && (
+          <div className={styles.colOpdata}>
+            <span className={styles.opdata} title={problem.opdata}>{problem.opdata}</span>
+          </div>
+        )}
 
         {options.showTags && (
           <div className={styles.colTags}>
@@ -268,14 +353,41 @@ const TableRow: React.FC<TableRowProps> = ({ problem, options, isOpen, onToggle,
           </div>
         )}
 
-        <div className={styles.colAck}>
-          {problem.acknowledged && (
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-              stroke="#41d882" strokeWidth="2.5" strokeLinecap="round">
-              <polyline points="20 6 9 17 4 12"/>
-            </svg>
-          )}
-        </div>
+        {options.showTableHostGroups && (
+          <div className={styles.colGroups}>
+            <div className={styles.groupsRow}>
+              {problem.groups.slice(0, 2).map((group, idx) => (
+                <span key={idx} className={styles.groupChip} title={group}>{group}</span>
+              ))}
+              {problem.groups.length > 2 && (
+                <span className={styles.tagMore}>+{problem.groups.length - 2}</span>
+              )}
+            </div>
+          </div>
+        )}
+
+        {options.showDatasourceName && (
+          <div className={styles.colDatasource}>
+            <span className={styles.datasourceName} title={problem.datasourceName}>{problem.datasourceName}</span>
+          </div>
+        )}
+
+        {options.showAck && (
+          <div className={styles.colAck}>
+            {problem.acknowledged && (
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                stroke="#41d882" strokeWidth="2.5" strokeLinecap="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            )}
+          </div>
+        )}
+
+        {options.showAge && (
+          <div className={styles.colAge}>
+            <span className={styles.ageText}>{getAge(problem.time)}</span>
+          </div>
+        )}
 
         {options.showTimestamp && (
           <div className={styles.colTime} style={{ color: options.timestampColor }}>
@@ -341,12 +453,17 @@ export const TableView: React.FC<TableViewProps> = ({ problems, options, openId,
       style={{ '--table-cols': buildTableColumns(options) } as React.CSSProperties}
     >
       <div className={styles.tableHeader}>
-        {options.showSeverityBadge && <div className={styles.colSeverity}>Severity</div>}
-        {options.showHostName      && <div className={styles.colHost}>Host</div>}
+        {options.showSeverityBadge   && <div className={styles.colSeverity}>Severity</div>}
+        {options.showHostName        && <div className={styles.colHost}>Host</div>}
+        {options.showStatus          && <div className={styles.colStatus}>Status</div>}
         <div className={styles.colProblem}>Problem</div>
-        {options.showTags          && <div className={styles.colTags}>Tags</div>}
-        <div className={styles.colAck}>Ack</div>
-        {options.showTimestamp     && <div className={styles.colTime}>Time</div>}
+        {options.showOperationalData && <div className={styles.colOpdata}>Op. data</div>}
+        {options.showTags            && <div className={styles.colTags}>Tags</div>}
+        {options.showTableHostGroups && <div className={styles.colGroups}>Groups</div>}
+        {options.showDatasourceName  && <div className={styles.colDatasource}>Datasource</div>}
+        {options.showAck             && <div className={styles.colAck}>Ack</div>}
+        {options.showAge             && <div className={styles.colAge}>Age</div>}
+        {options.showTimestamp       && <div className={styles.colTime}>Time</div>}
         <div className={styles.colActions}></div>
       </div>
 

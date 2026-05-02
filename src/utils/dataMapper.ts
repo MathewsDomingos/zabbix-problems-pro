@@ -31,6 +31,9 @@ const mapJsonToProblem = (raw: any): ZabbixProblem => ({
       raw.items.map((i: any) => ({ key: i.key_ ?? '', name: i.name ?? '', lastvalue: i.lastvalue ?? '' }))
     : [],
   datasourceUid: raw.datasource?.uid ?? '',
+  opdata: raw.opdata ?? '',
+  datasourceName: raw.datasource?.type ?? '',
+  value: String(raw.value ?? '1'),
 });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

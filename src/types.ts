@@ -24,6 +24,9 @@ export interface ZabbixProblem {
   groups: string[];
   items: ZabbixItem[];
   datasourceUid?: string;
+  opdata: string;
+  datasourceName: string;
+  value: string;
 }
 
 export interface SeverityColorConfig {
@@ -59,6 +62,14 @@ export interface PanelOptions {
   showTags: boolean;
   showEventId: boolean;
   showSuppressed: boolean;
+
+  // Section 3 — Card Fields (Table-only)
+  showStatus: boolean;
+  showAck: boolean;
+  showAge: boolean;
+  showOperationalData: boolean;
+  showTableHostGroups: boolean;
+  showDatasourceName: boolean;
 
   // Section 4 — Details Fields
   showTriggerExpression: boolean;
