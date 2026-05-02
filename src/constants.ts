@@ -35,6 +35,9 @@ export const DEFAULT_OPTIONS: PanelOptions = {
   fontSize: 100,
   pageSize: 10,
   highlightBackground: false,
+  highlightStyle: 'solid',
+  highlightIntensity: 15,
+  highlightDirection: 90,
 
   // Colors
   severityColors: {

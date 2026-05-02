@@ -51,7 +51,7 @@ export const SeverityBadge: React.FC<Props> = ({ severity, customColor, severity
       className={styles.badge}
       style={{ background: colors.badgeBg, color: colors.badgeText }}
     >
-      {severity >= 4 && <span className={styles.dot} />}
+      <span className={styles.dot} />
       {getSeverityLabel(severity, severityColors)}
     </span>
   );

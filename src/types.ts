@@ -43,6 +43,9 @@ export interface PanelOptions {
   fontSize: number;
   pageSize: number;
   highlightBackground: boolean;
+  highlightStyle: 'solid' | 'gradient';
+  highlightIntensity: number;
+  highlightDirection: 0 | 45 | 90 | 135 | 180;
 
   // Section 2 — Colors
   severityColors: Record<number, SeverityColorConfig>;

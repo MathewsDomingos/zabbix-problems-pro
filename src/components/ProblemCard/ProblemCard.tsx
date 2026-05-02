@@ -9,7 +9,7 @@ injectGlobal`
   }
 `;
 import { ZabbixProblem, PanelOptions } from '../../types';
-import { getSeverityColors } from '../../utils/severityUtils';
+import { getSeverityColors, getHighlightStyle } from '../../utils/severityUtils';
 import { SeverityBadge } from '../SeverityBadge';
 import { ProblemDetails } from '../ProblemDetails';
 import { AckModal, AckFormData } from '../AckModal';
@@ -43,14 +43,6 @@ function formatTimestamp(date: Date): string {
   const m = String(date.getMinutes()).padStart(2, '0');
   const s = String(date.getSeconds()).padStart(2, '0');
   return `${day} ${month} ${year}  ${h}:${m}:${s}`;
-}
-
-function hexToRgba(hex: string, alpha: number): string {
-  const clean = hex.replace('#', '');
-  const r = parseInt(clean.substring(0, 2), 16);
-  const g = parseInt(clean.substring(2, 4), 16);
-  const b = parseInt(clean.substring(4, 6), 16);
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
 const getStyles = () => ({
@@ -240,9 +232,7 @@ export const ProblemCard: React.FC<Props> = ({ problem, isOpen, onToggle, option
     });
   };
 
-  const highlightBg = options.highlightBackground
-    ? { background: `linear-gradient(90deg, ${hexToRgba(colors.bar, 0.15)} 0%, transparent 60%)` }
-    : {};
+  const highlightStyle = getHighlightStyle(customColor ?? '#6b7280', options);
 
   const hasTagsVisible = options.showTags && problem.tags.length > 0;
   const hasFooterContent = hasTagsVisible || options.showEventId;
@@ -250,7 +240,7 @@ export const ProblemCard: React.FC<Props> = ({ problem, isOpen, onToggle, option
 
   return (
     <div className={styles.card} style={style}>
-      <div className={styles.header} style={highlightBg} onClick={onToggle}>
+      <div className={styles.header} style={highlightStyle} onClick={onToggle}>
         {!options.highlightBackground && (
           <div
             className={cx(styles.severityBar, problem.severity === 5 ? styles.severityBarDisaster : '')}

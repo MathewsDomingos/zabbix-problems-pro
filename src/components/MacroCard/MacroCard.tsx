@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { css, cx, keyframes } from '@emotion/css';
 import { useStyles2 } from '@grafana/ui';
 import { ZabbixProblem, PanelOptions } from '../../types';
-import { getSeverityColors } from '../../utils/severityUtils';
+import { getSeverityColors, getHighlightStyle } from '../../utils/severityUtils';
 import { SeverityBadge } from '../SeverityBadge';
 import { ProblemDetails } from '../ProblemDetails';
 import { AckModal, AckFormData } from '../AckModal';
@@ -31,14 +31,6 @@ function formatTimestamp(date: Date): string {
   const m = String(date.getMinutes()).padStart(2, '0');
   const s = String(date.getSeconds()).padStart(2, '0');
   return `${day} ${month} ${year}  ${h}:${m}:${s}`;
-}
-
-function hexToRgba(hex: string, alpha: number): string {
-  const clean = hex.replace('#', '');
-  const r = parseInt(clean.substring(0, 2), 16);
-  const g = parseInt(clean.substring(2, 4), 16);
-  const b = parseInt(clean.substring(4, 6), 16);
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
 const getStyles = () => ({
@@ -205,19 +197,17 @@ const MacroCard: React.FC<Props> = ({ problem, isOpen, onToggle, options, style 
     });
   };
 
-  const highlightBg = options.highlightBackground
-    ? { background: `linear-gradient(90deg, ${hexToRgba(colors.bar, 0.15)} 0%, transparent 60%)` }
-    : {};
+  const highlightStyle = getHighlightStyle(customColor ?? '#6b7280', options);
 
   return (
     <div className={styles.wrapper} style={style}>
-      <div className={styles.macroRow} onClick={onToggle}>
+      <div className={styles.macroRow} style={highlightStyle} onClick={onToggle}>
         {/* Severity bar — sibling of rowContent, fills height via align-items: stretch */}
         {!options.highlightBackground && (
           <div className={styles.severityBar} style={{ background: colors.bar }} />
         )}
 
-        <div className={styles.rowContent} style={highlightBg}>
+        <div className={styles.rowContent}>
           {options.showSeverityBadge && (
             <SeverityBadge
               severity={problem.severity}

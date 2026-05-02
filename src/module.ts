@@ -80,6 +80,49 @@ export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
         category: ['Zabbix Problems View'],
         defaultValue: DEFAULT_OPTIONS.highlightBackground,
       })
+      .addRadio({
+        path: 'highlightStyle',
+        name: 'Style',
+        category: ['Zabbix Problems View'],
+        defaultValue: DEFAULT_OPTIONS.highlightStyle,
+        settings: {
+          options: [
+            { value: 'solid',    label: 'Solid' },
+            { value: 'gradient', label: 'Gradient' },
+          ],
+        },
+        showIf: (options) => options.highlightBackground === true,
+      })
+      .addSliderInput({
+        path: 'highlightIntensity',
+        name: 'Intensity',
+        category: ['Zabbix Problems View'],
+        defaultValue: DEFAULT_OPTIONS.highlightIntensity,
+        settings: {
+          min: 5,
+          max: 30,
+          step: 1,
+        },
+        showIf: (options) => options.highlightBackground === true,
+      })
+      .addSelect({
+        path: 'highlightDirection',
+        name: 'Direction',
+        category: ['Zabbix Problems View'],
+        defaultValue: DEFAULT_OPTIONS.highlightDirection,
+        settings: {
+          options: [
+            { value: 0,   label: '0°'   },
+            { value: 45,  label: '45°'  },
+            { value: 90,  label: '90°'  },
+            { value: 135, label: '135°' },
+            { value: 180, label: '180°' },
+          ],
+        },
+        showIf: (options) =>
+          options.highlightBackground === true &&
+          options.highlightStyle === 'gradient',
+      })
 
       // ─── Section 2: Colors ──────────────────────────────────────────────
       .addCustomEditor({
