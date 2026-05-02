@@ -40,6 +40,7 @@ export const DEFAULT_OPTIONS: PanelOptions = {
   highlightDirection: 90,
 
   // Colors
+  timestampColor: '#4a6178',
   severityColors: {
     0: { label: 'Not classified', color: '#6b7280', show: true },
     1: { label: 'Information',    color: '#3b82f6', show: true },

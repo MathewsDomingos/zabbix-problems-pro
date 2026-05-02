@@ -134,6 +134,13 @@ export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
         defaultValue: DEFAULT_OPTIONS.severityColors,
       })
 
+      .addColorPicker({
+        path: 'timestampColor',
+        name: 'Timestamp color',
+        defaultValue: DEFAULT_OPTIONS.timestampColor,
+        category: ['Colors'],
+      })
+
       // ─── Section 3: Card Fields ─────────────────────────────────────────
       .addBooleanSwitch({
         path: 'showSeverityBadge',

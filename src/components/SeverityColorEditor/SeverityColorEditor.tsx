@@ -1,5 +1,5 @@
 import React from 'react';
-import { ColorPicker, Switch, Input, useTheme2 } from '@grafana/ui';
+import { ColorPicker, Switch, Input } from '@grafana/ui';
 import { StandardEditorProps } from '@grafana/data';
 import { SeverityColorConfig } from '../../types';
 
@@ -24,8 +24,6 @@ const DEFAULT_COLORS: Record<number, string> = {
 type SeverityColorsValue = Record<number, SeverityColorConfig>;
 
 export const SeverityColorEditor = ({ value, onChange }: StandardEditorProps<SeverityColorsValue>) => {
-  const theme = useTheme2();
-
   const handleLabelChange = (severity: number, label: string) => {
     onChange({ ...value, [severity]: { ...value[severity], label } });
   };
@@ -39,7 +37,7 @@ export const SeverityColorEditor = ({ value, onChange }: StandardEditorProps<Sev
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
       {([0, 1, 2, 3, 4, 5] as number[]).map((severity) => (
         <div
           key={severity}
@@ -48,7 +46,6 @@ export const SeverityColorEditor = ({ value, onChange }: StandardEditorProps<Sev
             alignItems: 'center',
             gap: '8px',
             padding: '5px 0',
-            borderBottom: `1px solid ${theme.colors.border.weak}`,
           }}
         >
           <Input
@@ -66,7 +63,7 @@ export const SeverityColorEditor = ({ value, onChange }: StandardEditorProps<Sev
           <span
             style={{
               fontSize: '12px',
-              color: theme.colors.text.secondary,
+              color: 'var(--color-text-secondary)',
               minWidth: '28px',
             }}
           >

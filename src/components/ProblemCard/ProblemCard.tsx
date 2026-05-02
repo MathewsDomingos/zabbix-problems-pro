@@ -262,7 +262,7 @@ export const ProblemCard: React.FC<Props> = ({ problem, isOpen, onToggle, option
               <span className={styles.suppBadge}>Suprimido</span>
             )}
             {options.showTimestamp && (
-              <span className={styles.time}>{formatTimestamp(problem.time)}</span>
+              <span className={styles.time} style={{ color: options.timestampColor }}>{formatTimestamp(problem.time)}</span>
             )}
           </div>
 

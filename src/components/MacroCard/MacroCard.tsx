@@ -240,7 +240,7 @@ const MacroCard: React.FC<Props> = ({ problem, isOpen, onToggle, options, style 
           )}
 
           {options.showTimestamp && (
-            <span className={styles.timestamp}>{formatTimestamp(problem.time)}</span>
+            <span className={styles.timestamp} style={{ color: options.timestampColor }}>{formatTimestamp(problem.time)}</span>
           )}
 
           <div className={styles.cardActions}>

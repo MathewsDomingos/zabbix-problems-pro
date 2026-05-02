@@ -49,6 +49,7 @@ export interface PanelOptions {
 
   // Section 2 — Colors
   severityColors: Record<number, SeverityColorConfig>;
+  timestampColor: string;
 
   // Section 3 — Card Fields
   showSeverityBadge: boolean;
