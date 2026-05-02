@@ -7,14 +7,24 @@ export interface AckFormData {
   message: string;
   acknowledge: boolean;
   changeSeverity: boolean;
+  selectedSeverity: number;
   closeProblem: boolean;
 }
 
 interface AckModalProps {
   problem: ZabbixProblem;
   onClose: () => void;
-  onSubmit: (data: AckFormData) => void;
+  onSubmit?: (data: AckFormData) => void;
 }
+
+const SEVERITIES = [
+  { value: 0, label: 'Not classified' },
+  { value: 1, label: 'Information' },
+  { value: 2, label: 'Warning' },
+  { value: 3, label: 'Average' },
+  { value: 4, label: 'High' },
+  { value: 5, label: 'Disaster' },
+];
 
 const overlayIn = keyframes`
   from { opacity: 0; }
@@ -130,6 +140,33 @@ const getStyles = () => ({
       cursor: pointer;
     }
   `,
+  severitySelector: css`
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 8px 0 4px 24px;
+  `,
+  sevBtn: css`
+    padding: 4px 10px;
+    border-radius: 5px;
+    border: 1px solid #1e2d3d;
+    background: transparent;
+    color: #567090;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    &:hover {
+      background: #1a2535;
+      color: #a0bdcf;
+      border-color: #2d4460;
+    }
+  `,
+  sevBtnActive: css`
+    background: #0f2035;
+    color: #6ea8d0;
+    border-color: #2d6090;
+    font-weight: 600;
+  `,
   footer: css`
     display: flex;
     gap: 10px;
@@ -165,16 +202,63 @@ const getStyles = () => ({
   `,
 });
 
-export const AckModal = ({ problem: _problem, onClose, onSubmit }: AckModalProps) => {
+export const AckModal = ({ problem, onClose }: AckModalProps) => {
   const styles = useStyles2(getStyles);
   const [message, setMessage] = useState('');
   const [acknowledge, setAcknowledge] = useState(true);
   const [changeSeverity, setChangeSeverity] = useState(false);
+  const [selectedSeverity, setSelectedSeverity] = useState(problem.severity);
   const [closeProblem, setCloseProblem] = useState(false);
 
-  const handleSubmit = () => {
-    onSubmit({ message, acknowledge, changeSeverity, closeProblem });
-    onClose();
+  const handleSubmit = async () => {
+    // Monta as flags de action para a API Zabbix:
+    // 1 = close, 2 = acknowledge, 4 = add message, 8 = change severity
+    let action = 0;
+    if (acknowledge)    { action |= 2; }
+    if (message)        { action |= 4; }
+    if (changeSeverity) { action |= 8; }
+    if (closeProblem)   { action |= 1; }
+
+    const params: Record<string, unknown> = {
+      eventids: [problem.eventid],
+      action,
+    };
+
+    if (message)        { params.message  = message; }
+    if (changeSeverity) { params.severity = selectedSeverity; }
+
+    try {
+      const datasourceUid = problem.datasourceUid ?? '';
+
+      const response = await fetch(
+        `/api/datasources/proxy/uid/${datasourceUid}/`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            jsonrpc: '2.0',
+            method: 'event.acknowledge',
+            params,
+            id: 1,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.error) {
+        console.error('[ZabbixProblemsPro] Zabbix API error:', data.error);
+        alert(`Error: ${data.error.data || data.error.message}`);
+        return;
+      }
+
+      console.log('[ZabbixProblemsPro] Acknowledge success:', data.result);
+      onClose();
+
+    } catch (err) {
+      console.error('[ZabbixProblemsPro] Request failed:', err);
+      alert('Failed to send acknowledge. Check console for details.');
+    }
   };
 
   return (
@@ -229,11 +313,28 @@ export const AckModal = ({ problem: _problem, onClose, onSubmit }: AckModalProps
                 onChange={(e) => setAcknowledge(e.target.checked)} />
               <span>Acknowledge</span>
             </label>
+
             <label className={styles.checkboxLabel}>
               <input type="checkbox" checked={changeSeverity}
                 onChange={(e) => setChangeSeverity(e.target.checked)} />
               <span>Change severity</span>
             </label>
+
+            {changeSeverity && (
+              <div className={styles.severitySelector}>
+                {SEVERITIES.map((sev) => (
+                  <button
+                    key={sev.value}
+                    type="button"
+                    className={`${styles.sevBtn}${selectedSeverity === sev.value ? ` ${styles.sevBtnActive}` : ''}`}
+                    onClick={() => setSelectedSeverity(sev.value)}
+                  >
+                    {sev.label}
+                  </button>
+                ))}
+              </div>
+            )}
+
             <label className={styles.checkboxLabel}>
               <input type="checkbox" checked={closeProblem}
                 onChange={(e) => setCloseProblem(e.target.checked)} />

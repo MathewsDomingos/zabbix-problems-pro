@@ -1,94 +1,65 @@
-import { PanelData, DataFrame } from '@grafana/data';
-import { ZabbixProblem, ZabbixTag, ZabbixItem } from '../types';
+import { PanelData, Field } from '@grafana/data';
+import { ZabbixProblem } from '../types';
 
-function getFieldValue(frame: DataFrame, fieldName: string, rowIndex: number): unknown {
-  const field = frame.fields.find((f) => f.name === fieldName);
-  if (!field) {
-    return undefined;
-  }
+function getValueAt(field: Field, index: number): unknown {
   const values = field.values as unknown;
   if (Array.isArray(values)) {
-    return values[rowIndex];
+    return values[index] ?? null;
   }
   // suporte à API Vector legada de versões antigas do Grafana
-  return (values as { get?: (i: number) => unknown }).get?.(rowIndex);
+  return (values as { get?: (i: number) => unknown }).get?.(index) ?? null;
 }
 
-function parseJsonSafe<T>(value: unknown, fallback: T): T {
-  if (!value || typeof value !== 'string') {
-    return fallback;
-  }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const mapJsonToProblem = (raw: any): ZabbixProblem => ({
+  eventid: String(raw.eventid ?? ''),
+  triggerid: String(raw.triggerid ?? ''),
+  description: raw.name ?? raw.description ?? '',
+  host: raw.hosts?.[0]?.name ?? raw.hosts?.[0]?.host ?? '',
+  severity: parseInt(raw.severity ?? '0', 10),
+  time: new Date((raw.timestamp ?? 0) * 1000),
+  acknowledged: raw.acknowledged === '1',
+  suppressed: raw.suppressed === '1',
+  comments: raw.comments ?? '',
+  expression: raw.expression ?? '',
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  tags: Array.isArray(raw.tags) ? raw.tags.map((t: any) => ({ tag: t.tag, value: t.value })) : [],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  groups: Array.isArray(raw.groups) ? raw.groups.map((g: any) => g.name) : [],
+  items: Array.isArray(raw.items)
+    ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      raw.items.map((i: any) => ({ key: i.key_ ?? '', name: i.name ?? '', lastvalue: i.lastvalue ?? '' }))
+    : [],
+  datasourceUid: raw.datasource?.uid ?? '',
+});
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const processField = (value: any): ZabbixProblem | null => {
   try {
-    return JSON.parse(value) as T;
+    const raw = typeof value === 'string' ? JSON.parse(value) : value;
+    if (!raw?.eventid && !raw?.triggerid) {
+      return null;
+    }
+    return mapJsonToProblem(raw);
   } catch {
-    return fallback;
+    return null;
   }
-}
-
-function parseTags(raw: unknown): ZabbixTag[] {
-  if (Array.isArray(raw)) {
-    return raw as ZabbixTag[];
-  }
-  return parseJsonSafe<ZabbixTag[]>(raw, []);
-}
-
-function parseItems(raw: unknown): ZabbixItem[] {
-  if (Array.isArray(raw)) {
-    return raw as ZabbixItem[];
-  }
-  return parseJsonSafe<ZabbixItem[]>(raw, []);
-}
-
-function parseGroups(raw: unknown): string[] {
-  if (Array.isArray(raw)) {
-    return (raw as unknown[]).map(String);
-  }
-  if (typeof raw !== 'string' || !raw) {
-    return [];
-  }
-  return raw
-    .split(',')
-    .map((g) => g.trim())
-    .filter(Boolean);
-}
-
-function toDate(raw: unknown): Date {
-  if (raw instanceof Date) {
-    return raw;
-  }
-  if (typeof raw === 'number') {
-    // timestamps unix em segundos têm menos de 12 dígitos
-    return new Date(raw < 1e12 ? raw * 1000 : raw);
-  }
-  if (typeof raw === 'string' && raw) {
-    return new Date(raw);
-  }
-  return new Date();
-}
+};
 
 export function mapDataFrameToProblems(data: PanelData): ZabbixProblem[] {
   const problems: ZabbixProblem[] = [];
 
   for (const frame of data.series) {
-    const length = frame.length;
-    for (let i = 0; i < length; i++) {
-      const get = (name: string) => getFieldValue(frame, name, i);
+    const problemsField = frame.fields.find((f) => f.name === 'Problems');
 
-      problems.push({
-        eventid: String(get('eventid') ?? get('eventId') ?? ''),
-        triggerid: String(get('triggerid') ?? get('triggerId') ?? ''),
-        description: String(get('description') ?? get('name') ?? ''),
-        host: String(get('host') ?? ''),
-        severity: Number(get('severity') ?? 0),
-        time: toDate(get('time') ?? get('clock') ?? null),
-        acknowledged: Boolean(Number(get('acknowledged') ?? 0)),
-        suppressed: Boolean(Number(get('suppressed') ?? 0)),
-        comments: String(get('comments') ?? ''),
-        expression: String(get('expression') ?? ''),
-        tags: parseTags(get('tags')),
-        groups: parseGroups(get('groups') ?? get('group') ?? ''),
-        items: parseItems(get('items')),
-      });
+    if (problemsField) {
+      for (let i = 0; i < frame.length; i++) {
+        const value = getValueAt(problemsField, i);
+        const problem = processField(value);
+        if (problem) {
+          problems.push(problem);
+        }
+      }
     }
   }
 

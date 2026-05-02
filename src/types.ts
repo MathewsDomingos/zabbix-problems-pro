@@ -23,6 +23,7 @@ export interface ZabbixProblem {
   tags: ZabbixTag[];
   groups: string[];
   items: ZabbixItem[];
+  datasourceUid?: string;
 }
 
 export interface SeverityColorConfig {
