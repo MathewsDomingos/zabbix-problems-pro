@@ -190,7 +190,6 @@ const getStyles = () => ({
     padding: 1px 6px;
     border-radius: 3px;
     background: #111820;
-    color: #4a6178;
     border: 1px solid #1a2535;
     white-space: nowrap;
   `,
@@ -206,7 +205,6 @@ const getStyles = () => ({
   `,
   groupChip: css`
     font-size: 0.7em;
-    color: #567090;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -214,12 +212,10 @@ const getStyles = () => ({
   ageText: css`
     font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
     font-size: 0.75em;
-    color: #567090;
     white-space: nowrap;
   `,
   opdata: css`
     font-size: 0.75em;
-    color: #7fa0c0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -227,7 +223,6 @@ const getStyles = () => ({
   `,
   datasourceName: css`
     font-size: 0.7em;
-    color: #3a5168;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -334,7 +329,7 @@ const TableRow: React.FC<TableRowProps> = ({ problem, options, isOpen, onToggle,
 
         {options.showOperationalData && (
           <div className={styles.colOpdata}>
-            <span className={styles.opdata} title={problem.opdata}>{problem.opdata}</span>
+            <span className={styles.opdata} title={problem.opdata} style={{ color: options.timestampColor }}>{problem.opdata}</span>
           </div>
         )}
 
@@ -342,7 +337,7 @@ const TableRow: React.FC<TableRowProps> = ({ problem, options, isOpen, onToggle,
           <div className={styles.colTags}>
             <div className={styles.tagsRow}>
               {problem.tags.slice(0, 2).map((tag, idx) => (
-                <span key={idx} className={styles.tagChip}>
+                <span key={idx} className={styles.tagChip} style={{ color: options.timestampColor }}>
                   {tag.tag}{tag.value ? `:${tag.value}` : ''}
                 </span>
               ))}
@@ -357,7 +352,7 @@ const TableRow: React.FC<TableRowProps> = ({ problem, options, isOpen, onToggle,
           <div className={styles.colGroups}>
             <div className={styles.groupsRow}>
               {problem.groups.slice(0, 2).map((group, idx) => (
-                <span key={idx} className={styles.groupChip} title={group}>{group}</span>
+                <span key={idx} className={styles.groupChip} title={group} style={{ color: options.timestampColor }}>{group}</span>
               ))}
               {problem.groups.length > 2 && (
                 <span className={styles.tagMore}>+{problem.groups.length - 2}</span>
@@ -368,7 +363,7 @@ const TableRow: React.FC<TableRowProps> = ({ problem, options, isOpen, onToggle,
 
         {options.showDatasourceName && (
           <div className={styles.colDatasource}>
-            <span className={styles.datasourceName} title={problem.datasourceName}>{problem.datasourceName}</span>
+            <span className={styles.datasourceName} title={problem.datasourceName} style={{ color: options.timestampColor }}>{problem.datasourceName}</span>
           </div>
         )}
 
@@ -385,7 +380,7 @@ const TableRow: React.FC<TableRowProps> = ({ problem, options, isOpen, onToggle,
 
         {options.showAge && (
           <div className={styles.colAge}>
-            <span className={styles.ageText}>{getAge(problem.time)}</span>
+            <span className={styles.ageText} style={{ color: options.timestampColor }}>{getAge(problem.time)}</span>
           </div>
         )}
 

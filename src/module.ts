@@ -145,7 +145,7 @@ export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
 
       .addColorPicker({
         path: 'timestampColor',
-        name: 'Timestamp color',
+        name: 'Secondary text color',
         defaultValue: DEFAULT_OPTIONS.timestampColor,
         category: ['Colors'],
       })

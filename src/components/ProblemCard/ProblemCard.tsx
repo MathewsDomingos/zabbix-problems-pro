@@ -138,7 +138,6 @@ const getStyles = () => ({
     padding: 2px 7px;
     border-radius: 4px;
     background: #111820;
-    color: #4a6178;
     border: 1px solid #1a2535;
   `,
   tagChipValue: css`
@@ -190,7 +189,6 @@ const getStyles = () => ({
   ageBadge: css`
     font-family: monospace;
     font-size: 0.7em;
-    color: #567090;
     background: #111820;
     border: 1px solid #1a2535;
     padding: 1px 6px;
@@ -198,7 +196,6 @@ const getStyles = () => ({
   `,
   opdataBadge: css`
     font-size: 0.7em;
-    color: #7fa0c0;
     background: #111820;
     border: 1px solid #1a2535;
     padding: 1px 6px;
@@ -210,7 +207,6 @@ const getStyles = () => ({
   `,
   groupBadge: css`
     font-size: 0.7em;
-    color: #4a6578;
     background: #0f1820;
     border: 1px solid #1a2535;
     padding: 1px 6px;
@@ -218,7 +214,6 @@ const getStyles = () => ({
   `,
   datasourceBadge: css`
     font-size: 0.7em;
-    color: #3a5168;
     background: #0a1018;
     border: 1px solid #1a2535;
     padding: 1px 6px;
@@ -378,9 +373,8 @@ export const ProblemCard: React.FC<Props> = ({ problem, isOpen, onToggle, option
 
               {hasTagsVisible &&
                 problem.tags.map((tag, idx) => (
-                  <span key={idx} className={styles.tagChip}>
-                    {tag.tag}
-                    {tag.value && <span className={styles.tagChipValue}>:{tag.value}</span>}
+                  <span key={idx} className={styles.tagChip} style={{ color: options.timestampColor }}>
+                    {tag.tag}{tag.value ? `:${tag.value}` : ''}
                   </span>
                 ))}
 
@@ -395,19 +389,19 @@ export const ProblemCard: React.FC<Props> = ({ problem, isOpen, onToggle, option
               )}
 
               {options.showAge && (
-                <span className={styles.ageBadge}>{getAge(problem.time)}</span>
+                <span className={styles.ageBadge} style={{ color: options.timestampColor }}>{getAge(problem.time)}</span>
               )}
 
               {options.showOperationalData && problem.opdata && (
-                <span className={styles.opdataBadge}>{problem.opdata}</span>
+                <span className={styles.opdataBadge} style={{ color: options.timestampColor }}>{problem.opdata}</span>
               )}
 
               {options.showTableHostGroups && problem.groups[0] && (
-                <span className={styles.groupBadge}>{problem.groups[0]}</span>
+                <span className={styles.groupBadge} style={{ color: options.timestampColor }}>{problem.groups[0]}</span>
               )}
 
               {options.showDatasourceName && problem.datasourceName && (
-                <span className={styles.datasourceBadge}>{problem.datasourceName}</span>
+                <span className={styles.datasourceBadge} style={{ color: options.timestampColor }}>{problem.datasourceName}</span>
               )}
 
               {options.showEventId && (

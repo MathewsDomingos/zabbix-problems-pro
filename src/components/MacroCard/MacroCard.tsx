@@ -107,7 +107,6 @@ const getStyles = () => ({
     padding: 2px 7px;
     border-radius: 4px;
     background: #111820;
-    color: #4a6178;
     border: 1px solid #1a2535;
     white-space: nowrap;
     flex-shrink: 0;
@@ -191,13 +190,11 @@ const getStyles = () => ({
   ageText: css`
     font-family: monospace;
     font-size: 0.7em;
-    color: #567090;
     white-space: nowrap;
     flex-shrink: 0;
   `,
   opdataText: css`
     font-size: 0.7em;
-    color: #7fa0c0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -274,17 +271,16 @@ const MacroCard: React.FC<Props> = ({ problem, isOpen, onToggle, options, style 
           )}
 
           {options.showAge && (
-            <span className={styles.ageText}>{getAge(problem.time)}</span>
+            <span className={styles.ageText} style={{ color: options.timestampColor }}>{getAge(problem.time)}</span>
           )}
 
           {options.showOperationalData && problem.opdata && (
-            <span className={styles.opdataText}>{problem.opdata}</span>
+            <span className={styles.opdataText} style={{ color: options.timestampColor }}>{problem.opdata}</span>
           )}
 
           {options.showTags && problem.tags.map((tag, idx) => (
-            <span key={idx} className={styles.tagChip}>
-              {tag.tag}
-              {tag.value && <span className={styles.tagChipValue}>:{tag.value}</span>}
+            <span key={idx} className={styles.tagChip} style={{ color: options.timestampColor }}>
+              {tag.tag}{tag.value ? `:${tag.value}` : ''}
             </span>
           ))}
 
