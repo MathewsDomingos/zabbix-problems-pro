@@ -219,27 +219,23 @@ export const AckModal = ({ problem, onClose }: AckModalProps) => {
     if (changeSeverity) { action |= 8; }
     if (closeProblem)   { action |= 1; }
 
-    const params: Record<string, unknown> = {
-      eventids: [problem.eventid],
-      action,
-    };
-
-    if (message)        { params.message  = message; }
-    if (changeSeverity) { params.severity = selectedSeverity; }
-
     try {
       const datasourceUid = problem.datasourceUid ?? '';
+      console.log('[ZabbixProblemsPro] Using datasource UID:', datasourceUid);
 
       const response = await fetch(
-        `/api/datasources/proxy/uid/${datasourceUid}/`,
+        `/api/datasources/uid/${datasourceUid}/resources/zabbix-api`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            jsonrpc: '2.0',
             method: 'event.acknowledge',
-            params,
-            id: 1,
+            params: {
+              eventids: [problem.eventid],
+              action,
+              message: message || undefined,
+              severity: changeSeverity ? selectedSeverity : undefined,
+            },
           }),
         }
       );
