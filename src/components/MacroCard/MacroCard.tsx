@@ -140,10 +140,10 @@ const getStyles = () => ({
     justify-content: center;
     width: 28px;
     height: 28px;
-    border-radius: 6px;
+    border-radius: 4px;
     border: 1px solid #1e2d3d;
-    background: transparent;
-    color: #567090;
+    background: #1a2535;
+    color: #7fa0c0;
     cursor: pointer;
     transition: all 0.15s ease;
     flex-shrink: 0;
@@ -151,7 +151,7 @@ const getStyles = () => ({
       transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
     &:hover {
-      background: #1a2535;
+      background: #1e2d3d;
       color: #a0bdcf;
       border-color: #2d4460;
     }
