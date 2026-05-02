@@ -4,6 +4,7 @@ import { useStyles2 } from '@grafana/ui';
 import { ZabbixProblem, PanelOptions } from '../../types';
 import { ProblemCard } from '../ProblemCard';
 import { MacroCard } from '../MacroCard';
+import { TableView } from '../TableView';
 import { EmptyState } from '../EmptyState/EmptyState';
 
 interface Props {
@@ -35,6 +36,17 @@ export const ProblemsList: React.FC<Props> = ({ problems, options, currentPage }
 
   if (problems.length === 0) {
     return <EmptyState />;
+  }
+
+  if (options.layout === 'table') {
+    return (
+      <TableView
+        problems={problems}
+        options={options}
+        openId={openId}
+        setOpenId={setOpenId}
+      />
+    );
   }
 
   return (

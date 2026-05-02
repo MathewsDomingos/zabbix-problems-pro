@@ -38,7 +38,7 @@ export interface PanelOptions {
   showPagination: boolean;
 
   // Section 1 — Zabbix Problems View
-  layout: 'list' | 'macro';
+  layout: 'list' | 'macro' | 'table';
   sortBy: 'lastChange' | 'severity' | 'default';
   fontSize: number;
   pageSize: number;
