@@ -24,6 +24,54 @@ export const SEVERITY_LABELS: Record<number, string> = {
   5: 'Disaster',
 };
 
+export const LAYOUT_DEFAULTS: Record<string, Partial<PanelOptions>> = {
+  list: {
+    showSeverityBadge: true,
+    showHostName: true,
+    showTimestamp: true,
+    showDescription: true,
+    showTags: true,
+    showEventId: false,
+    showSuppressed: false,
+    showStatus: false,
+    showAck: false,
+    showAge: false,
+    showOperationalData: false,
+    showTableHostGroups: false,
+    showDatasourceName: false,
+  },
+  macro: {
+    showSeverityBadge: true,
+    showHostName: true,
+    showTimestamp: true,
+    showDescription: false,
+    showTags: false,
+    showEventId: false,
+    showSuppressed: false,
+    showStatus: false,
+    showAck: false,
+    showAge: false,
+    showOperationalData: false,
+    showTableHostGroups: false,
+    showDatasourceName: false,
+  },
+  table: {
+    showSeverityBadge: true,
+    showHostName: true,
+    showTimestamp: true,
+    showDescription: false,
+    showTags: false,
+    showEventId: false,
+    showSuppressed: false,
+    showStatus: true,
+    showAck: true,
+    showAge: true,
+    showOperationalData: false,
+    showTableHostGroups: false,
+    showDatasourceName: false,
+  },
+};
+
 export const DEFAULT_OPTIONS: PanelOptions = {
   // Style
   showScrollbar: true,
@@ -50,19 +98,17 @@ export const DEFAULT_OPTIONS: PanelOptions = {
     5: { label: 'Disaster',       color: '#dc2626', show: true },
   },
 
-  // Card Fields
+  // Card Fields — mirrors LAYOUT_DEFAULTS.list (layout padrão)
   showSeverityBadge: true,
   showHostName: true,
   showTimestamp: true,
   showDescription: true,
-  showTags: false,
+  showTags: true,
   showEventId: false,
   showSuppressed: false,
-
-  // Card Fields (all layouts)
   showStatus: false,
-  showAck: true,
-  showAge: true,
+  showAck: false,
+  showAge: false,
   showOperationalData: false,
   showTableHostGroups: false,
   showDatasourceName: false,

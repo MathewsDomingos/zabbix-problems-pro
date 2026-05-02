@@ -1,8 +1,9 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { css } from '@emotion/css';
 import { useStyles2 } from '@grafana/ui';
 import { PanelProps } from '@grafana/data';
 import { PanelOptions, ZabbixProblem } from '../types';
+import { LAYOUT_DEFAULTS } from '../constants';
 import { mapDataFrameToProblems } from '../utils/dataMapper';
 import { ProblemsList } from './ProblemsList';
 import { Pagination } from './Pagination/Pagination';
@@ -54,6 +55,17 @@ function filterAndSort(problems: ZabbixProblem[], options: PanelOptions): Zabbix
 export const SimplePanel: React.FC<Props> = ({ data, width, height, options, onOptionsChange }) => {
   const styles = useStyles2(getStyles);
   const [currentPage, setCurrentPage] = useState(1);
+  const prevLayoutRef = useRef(options.layout);
+
+  useEffect(() => {
+    if (options.layout !== prevLayoutRef.current) {
+      prevLayoutRef.current = options.layout;
+      const layoutDefaults = LAYOUT_DEFAULTS[options.layout];
+      if (layoutDefaults && onOptionsChange) {
+        onOptionsChange({ ...options, ...layoutDefaults });
+      }
+    }
+  }, [options.layout]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const problems = useMemo(() => {
     try {
