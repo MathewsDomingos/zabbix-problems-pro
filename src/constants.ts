@@ -61,8 +61,8 @@ export const DEFAULT_OPTIONS: PanelOptions = {
 
   // Card Fields (all layouts)
   showStatus: false,
-  showAck: false,
-  showAge: false,
+  showAck: true,
+  showAge: true,
   showOperationalData: false,
   showTableHostGroups: false,
   showDatasourceName: false,
