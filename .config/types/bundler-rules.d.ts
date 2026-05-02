@@ -29,6 +29,12 @@ declare module '*.svg' {
   export default src;
 }
 
+// CSS Modules
+declare module '*.module.css' {
+  const classes: Record<string, string>;
+  export default classes;
+}
+
 // Font declarations
 declare module '*.woff';
 declare module '*.woff2';

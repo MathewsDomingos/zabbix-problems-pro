@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { css, cx, keyframes } from '@emotion/css';
 import { useStyles2 } from '@grafana/ui';
 import { ZabbixProblem, PanelOptions } from '../../types';
 import { getSeverityColors } from '../../utils/severityUtils';
 import { SeverityBadge } from '../SeverityBadge';
 import { ProblemDetails } from '../ProblemDetails';
+import { AckModal, AckFormData } from '../AckModal';
 
 const cardFadeIn = keyframes`
   from { opacity: 0; transform: translateY(10px); }
@@ -134,38 +136,73 @@ const getStyles = () => ({
     white-space: nowrap;
     flex-shrink: 0;
   `,
-  btn: css`
-    font-size: 11px;
-    padding: 4px 11px;
+  cardActions: css`
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  `,
+  iconBtn: css`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
     border-radius: 6px;
     border: 1px solid #1e2d3d;
     background: transparent;
     color: #567090;
     cursor: pointer;
-    transition: all 0.15s;
-    white-space: nowrap;
+    transition: all 0.15s ease;
     flex-shrink: 0;
+    svg {
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
     &:hover {
       background: #1a2535;
       color: #a0bdcf;
       border-color: #2d4460;
     }
   `,
-  btnOpen: css`
-    background: #0f2035;
-    color: #6ea8d0;
-    border-color: #2d6090;
+  iconBtnOpen: css`
+    svg {
+      transform: rotate(180deg);
+    }
+  `,
+  iconBtnAck: css`
+    &:hover {
+      background: rgba(65, 216, 130, 0.1);
+      color: #41d882;
+      border-color: rgba(65, 216, 130, 0.3);
+    }
+  `,
+  iconBtnAcked: css`
+    color: #41d882;
+    border-color: rgba(65, 216, 130, 0.4);
+    background: rgba(65, 216, 130, 0.08);
   `,
 });
 
 const MacroCard: React.FC<Props> = ({ problem, isOpen, onToggle, options, style }) => {
   const styles = useStyles2(getStyles);
+  const [showAckModal, setShowAckModal] = useState(false);
   const customColor = options.severityColors?.[problem.severity]?.color;
   const colors = getSeverityColors(problem.severity, customColor);
 
   const handleBtnClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     onToggle();
+  };
+
+  const handleAckSubmit = async (formData: AckFormData) => {
+    // TODO: Integrar com Zabbix API
+    // POST /api_jsonrpc.php
+    // method: "event.acknowledge"
+    // params: { eventids: [eventid], action: flags, message }
+    console.log('[ZabbixProblemsPro] Acknowledge submitted:', {
+      eventid: problem.eventid,
+      ...formData,
+    });
   };
 
   const highlightBg = options.highlightBackground
@@ -216,16 +253,41 @@ const MacroCard: React.FC<Props> = ({ problem, isOpen, onToggle, options, style 
             <span className={styles.timestamp}>{formatTimestamp(problem.time)}</span>
           )}
 
-          <button
-            className={cx(styles.btn, isOpen && styles.btnOpen)}
-            onClick={handleBtnClick}
-          >
-            {isOpen ? 'Close' : 'Details'}
-          </button>
+          <div className={styles.cardActions}>
+            <button
+              className={cx(styles.iconBtn, styles.iconBtnAck, problem.acknowledged ? styles.iconBtnAcked : '')}
+              onClick={(e) => { e.stopPropagation(); setShowAckModal(true); }}
+              title="Acknowledge problem"
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </button>
+            <button
+              className={cx(styles.iconBtn, isOpen ? styles.iconBtnOpen : '')}
+              onClick={handleBtnClick}
+              title={isOpen ? 'Close details' : 'Show details'}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
 
       <ProblemDetails problem={problem} isOpen={isOpen} options={options} />
+
+      {showAckModal && createPortal(
+        <AckModal
+          problem={problem}
+          onClose={() => setShowAckModal(false)}
+          onSubmit={handleAckSubmit}
+        />,
+        document.body
+      )}
     </div>
   );
 };
