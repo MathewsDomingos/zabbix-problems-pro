@@ -71,6 +71,8 @@ export interface PanelOptions {
   showTableHostGroups: boolean;
   showDatasourceName: boolean;
 
+  hideTableHeader: boolean;
+
   // Section 4 — Details Fields
   showTriggerExpression: boolean;
   showComment: boolean;

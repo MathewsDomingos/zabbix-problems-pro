@@ -113,6 +113,8 @@ export const DEFAULT_OPTIONS: PanelOptions = {
   showTableHostGroups: false,
   showDatasourceName: false,
 
+  hideTableHeader: false,
+
   // Details Fields
   showTriggerExpression: true,
   showComment: true,

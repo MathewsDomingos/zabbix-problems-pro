@@ -40,6 +40,14 @@ export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
           ],
         },
       })
+      .addBooleanSwitch({
+        path: 'hideTableHeader',
+        name: 'Hide header',
+        description: 'Hide the table column headers',
+        category: ['Zabbix Problems View'],
+        defaultValue: DEFAULT_OPTIONS.hideTableHeader,
+        showIf: (options) => options.layout === 'table',
+      })
       .addSelect({
         path: 'sortBy',
         name: 'Sort by',

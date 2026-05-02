@@ -452,20 +452,22 @@ export const TableView: React.FC<TableViewProps> = ({ problems, options, openId,
       className={styles.tableWrapper}
       style={{ '--table-cols': buildTableColumns(options) } as React.CSSProperties}
     >
-      <div className={styles.tableHeader}>
-        {options.showSeverityBadge   && <div className={styles.colSeverity}>Severity</div>}
-        {options.showHostName        && <div className={styles.colHost}>Host</div>}
-        {options.showStatus          && <div className={styles.colStatus}>Status</div>}
-        <div className={styles.colProblem}>Problem</div>
-        {options.showOperationalData && <div className={styles.colOpdata}>Op. data</div>}
-        {options.showTags            && <div className={styles.colTags}>Tags</div>}
-        {options.showTableHostGroups && <div className={styles.colGroups}>Groups</div>}
-        {options.showDatasourceName  && <div className={styles.colDatasource}>Datasource</div>}
-        {options.showAck             && <div className={styles.colAck}>Ack</div>}
-        {options.showAge             && <div className={styles.colAge}>Age</div>}
-        {options.showTimestamp       && <div className={styles.colTime}>Time</div>}
-        <div className={styles.colActions}></div>
-      </div>
+      {!options.hideTableHeader && (
+        <div className={styles.tableHeader}>
+          {options.showSeverityBadge   && <div className={styles.colSeverity}>Severity</div>}
+          {options.showHostName        && <div className={styles.colHost}>Host</div>}
+          {options.showStatus          && <div className={styles.colStatus}>Status</div>}
+          <div className={styles.colProblem}>Problem</div>
+          {options.showOperationalData && <div className={styles.colOpdata}>Op. data</div>}
+          {options.showTags            && <div className={styles.colTags}>Tags</div>}
+          {options.showTableHostGroups && <div className={styles.colGroups}>Groups</div>}
+          {options.showDatasourceName  && <div className={styles.colDatasource}>Datasource</div>}
+          {options.showAck             && <div className={styles.colAck}>Ack</div>}
+          {options.showAge             && <div className={styles.colAge}>Age</div>}
+          {options.showTimestamp       && <div className={styles.colTime}>Time</div>}
+          <div className={styles.colActions}></div>
+        </div>
+      )}
 
       {problems.map((problem, index) => (
         <TableRow
