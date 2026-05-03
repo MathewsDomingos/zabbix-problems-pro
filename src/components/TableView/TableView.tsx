@@ -463,7 +463,7 @@ export const TableView: React.FC<TableViewProps> = ({ problems, options, openId,
           {options.showDatasourceName  && <div className={styles.colDatasource}>Datasource</div>}
           {options.showAck             && <div className={styles.colAck}>Ack</div>}
           {options.showAge             && <div className={styles.colAge}>Age</div>}
-          {options.showTimestamp       && <div className={styles.colTime}>Time</div>}
+          {options.showTimestamp       && <div>Time</div>}
           <div className={styles.colActions}></div>
         </div>
       )}
