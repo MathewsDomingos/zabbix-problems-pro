@@ -6,6 +6,7 @@ import { PanelOptions, ZabbixProblem } from '../types';
 import { mapDataFrameToProblems } from '../utils/dataMapper';
 import { ProblemsList } from './ProblemsList';
 import { Pagination } from './Pagination/Pagination';
+import { SeverityCounter } from './SeverityCounter/SeverityCounter';
 
 interface Props extends PanelProps<PanelOptions> {}
 
@@ -98,6 +99,10 @@ export const SimplePanel: React.FC<Props> = ({ data, width, height, options, onO
         background: 'transparent',
       }}
     >
+      {options.showSeverityCounter && (
+        <SeverityCounter problems={filtered} options={options} />
+      )}
+
       <div className={options.showScrollbar ? styles.listContainer : styles.listContainerNoScrollbar}>
         <ProblemsList problems={paged} options={options} currentPage={safePage} />
       </div>

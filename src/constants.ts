@@ -76,6 +76,7 @@ export const DEFAULT_OPTIONS: PanelOptions = {
   // Style
   showScrollbar: true,
   showPagination: true,
+  showSeverityCounter: false,
 
   // Zabbix Problems View
   layout: 'list',

@@ -39,6 +39,7 @@ export interface PanelOptions {
   // Section 0 — Style
   showScrollbar: boolean;
   showPagination: boolean;
+  showSeverityCounter: boolean;
 
   // Section 1 — Zabbix Problems View
   layout: 'list' | 'macro' | 'table';

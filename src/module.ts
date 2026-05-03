@@ -26,6 +26,13 @@ export const plugin = new PanelPlugin<PanelOptions>(SimplePanel)
         category: ['Style'],
         defaultValue: DEFAULT_OPTIONS.showPagination,
       })
+      .addBooleanSwitch({
+        path: 'showSeverityCounter',
+        name: 'Show severity counter',
+        description: 'Display a summary bar with incident count per severity',
+        defaultValue: DEFAULT_OPTIONS.showSeverityCounter,
+        category: ['Style'],
+      })
 
       // ─── Section 1: Zabbix Problems View ───────────────────────────────
       .addSelect({
