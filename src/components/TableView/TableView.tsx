@@ -7,6 +7,7 @@ import { SeverityBadge } from '../SeverityBadge';
 import { ProblemDetails } from '../ProblemDetails';
 import { AckModal, AckFormData } from '../AckModal';
 import { getAge } from '../../utils/timeUtils';
+import { getHighlightStyle } from '../../utils/severityUtils';
 
 const MONTHS_PT = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
 
@@ -271,14 +272,19 @@ interface TableRowProps {
   options: PanelOptions;
   isOpen: boolean;
   onToggle: () => void;
+  index: number;
   style?: React.CSSProperties;
 }
 
-const TableRow: React.FC<TableRowProps> = ({ problem, options, isOpen, onToggle, style }) => {
+const TableRow: React.FC<TableRowProps> = ({ problem, options, isOpen, onToggle, index, style }) => {
   const styles = useStyles2(getStyles);
   const [showAckModal, setShowAckModal] = useState(false);
   const customColor = options.severityColors?.[problem.severity]?.color;
   const isProblem = problem.value !== '0';
+
+  const rowBackground: React.CSSProperties = options.highlightBackground
+    ? getHighlightStyle(customColor ?? '#6b7280', options)
+    : { background: index % 2 === 0 ? 'transparent' : 'rgba(255, 255, 255, 0.02)' };
 
   const handleAckSubmit = async (formData: AckFormData) => {
     console.log('[ZabbixProblemsPro] Acknowledge submitted:', {
@@ -291,6 +297,7 @@ const TableRow: React.FC<TableRowProps> = ({ problem, options, isOpen, onToggle,
     <div className={styles.rowWrapper} style={style}>
       <div
         className={cx(styles.tableRow, isOpen && styles.tableRowOpen)}
+        style={rowBackground}
         onClick={onToggle}
       >
         {options.showSeverityBadge && (
@@ -468,6 +475,7 @@ export const TableView: React.FC<TableViewProps> = ({ problems, options, openId,
           options={options}
           isOpen={openId === problem.eventid}
           onToggle={() => setOpenId(openId === problem.eventid ? null : problem.eventid)}
+          index={index}
           style={{ animationDelay: `${Math.min(index * 40, 300)}ms` }}
         />
       ))}
