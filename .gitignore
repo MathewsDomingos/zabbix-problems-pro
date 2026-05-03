@@ -44,3 +44,8 @@ ci/
 .idea
 
 .eslintcache
+
+# Environment and local files
+.env
+*.local
+.DS_Store
